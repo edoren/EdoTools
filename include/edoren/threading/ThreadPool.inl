@@ -1,5 +1,3 @@
-#include <edoren/threading/ThreadPool.hpp>
-
 #include <mutex>
 #include <thread>
 
