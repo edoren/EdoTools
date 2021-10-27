@@ -5,16 +5,21 @@
 #include <edoren/container/SafeQueue.hpp>
 #include <edoren/container/Vector.hpp>
 
+#include <atomic>
 #include <condition_variable>
+#include <deque>
 #include <mutex>
 #include <thread>
 #include <vector>
 
 namespace edoren {
 
+template<typename TaskType = Function<void()>>
 class EDOREN_API ThreadPool {
 public:
-    using Task = Function<void()>;
+    enum class Status { RUNNING, STOPPING, STOPPED };
+
+    using Task = TaskType;
 
     ThreadPool(size_t num_threads);
 
@@ -22,12 +27,14 @@ public:
 
     void execute(Task&& f);
 
+    void joinAndStop();
+
 private:
-    bool m_is_running;
-    SafeQueue<Task> m_workQueue;
+    std::atomic<Status> m_status;
+    std::deque<Task> m_work_queue;
     Vector<std::thread> m_workers;
     std::condition_variable m_signaler;
-    std::mutex m_mutex;
+    std::mutex m_queue_mutex;
 };
 
 }  // namespace edoren
