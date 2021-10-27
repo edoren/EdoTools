@@ -10,7 +10,7 @@
                 "."
             ],
             "options": {
-                "cwd": "${workspaceFolder}/tests/build"
+                "cwd": "${workspaceFolder}/build"
             },
             "problemMatcher": [],
             "group": {

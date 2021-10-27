@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
+
 file(GLOB_RECURSE EDOTOOLS_SOURCE_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
@@ -20,4 +23,9 @@ add_library(${PROJECT_NAME} ${EDOTOOLS_SOURCE_FILES} ${EDOTOOLS_INCLUDE_FILES})
 set_target_properties(${PROJECT_NAME} PROPERTIES DEFINE_SYMBOL "EDOREN_EXPORTS")
 if(NOT BUILD_SHARED_LIBS)
     target_compile_definitions(${PROJECT_NAME} PUBLIC EDOREN_STATIC)
+endif()
+
+if(BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
 endif()
