@@ -36,9 +36,11 @@ Function<Ret(Args...), MaxSize>::Function(const Function& other) : m_data(),
 
 template <typename Ret, typename... Args, size_t MaxSize>
 Function<Ret(Args...), MaxSize>::Function(Function&& other) noexcept
-      : m_data(std::move(other.m_data)),
+      : m_data(),
         m_invoker(std::move(other.m_invoker)),
         m_manager(std::move(other.m_manager)) {
+    other.m_manager(&m_data, &other.m_data, Operation::COPY);
+    other.m_manager(&other.m_data, nullptr, Operation::DESTROY);
     other.m_invoker = nullptr;
     other.m_manager = nullptr;
 }
@@ -65,13 +67,18 @@ Function<Ret(Args...), MaxSize>::~Function() {
 
 template <typename Ret, typename... Args, size_t MaxSize>
 Function<Ret(Args...), MaxSize>& Function<Ret(Args...), MaxSize>::operator=(const Function& other) {
-    Function(other).Swap(*this);
+    Function(other).swap(*this);
     return *this;
 }
 
 template <typename Ret, typename... Args, size_t MaxSize>
 Function<Ret(Args...), MaxSize>& Function<Ret(Args...), MaxSize>::operator=(Function&& other) noexcept {
-    Function(std::move(other)).Swap(*this);
+    other.m_manager(&m_data, &other.m_data, Operation::COPY);
+    other.m_manager(&other.m_data, nullptr, Operation::DESTROY);
+    m_invoker = std::move(other.m_invoker);
+    m_manager = std::move(other.m_manager);
+    other.m_invoker = nullptr;
+    other.m_manager = nullptr;
     return *this;
 }
 
@@ -88,14 +95,14 @@ Function<Ret(Args...), MaxSize>& Function<Ret(Args...), MaxSize>::operator=(std:
 template <typename Ret, typename... Args, size_t MaxSize>
 template <typename T>
 Function<Ret(Args...), MaxSize>& Function<Ret(Args...), MaxSize>::operator=(T&& other) {
-    Function(std::forward<T>(other)).Swap(*this);
+    Function(std::forward<T>(other)).swap(*this);
     return *this;
 }
 
 template <typename Ret, typename... Args, size_t MaxSize>
 template <typename T>
 Function<Ret(Args...), MaxSize>& Function<Ret(Args...), MaxSize>::operator=(std::reference_wrapper<T> other) {
-    Function(other).Swap(*this);
+    Function(other).swap(*this);
     return *this;
 }
 
@@ -130,22 +137,22 @@ Ret Function<Ret(Args...), MaxSize>::operator()(Args&&... args) const {
 template <typename Ret, typename... Args, size_t MaxSize>
 template <typename FunctionType>
 Ret Function<Ret(Args...), MaxSize>::CallFunction(const void* data, Args&&... args) {
-    const auto* callable = static_cast<const FunctionType*>(data);
+    auto callable = static_cast<const FunctionType*>(data);
     return (*callable)(std::forward<Args>(args)...);
 }
 
 template <typename Ret, typename... Args, size_t MaxSize>
 template <typename FunctionType>
 void Function<Ret(Args...), MaxSize>::ManageFunction(void* dest, const void* src, Operation op) {
-    auto* destCast = static_cast<FunctionType*>(dest);
+    auto dest_cast = static_cast<FunctionType*>(dest);
     switch (op) {
         case Operation::COPY: {
             const auto* srcCast = static_cast<const FunctionType*>(src);
-            new (destCast) FunctionType(*srcCast);
+            new (dest_cast) FunctionType(*srcCast);
             break;
         }
         case Operation::DESTROY:
-            destCast->~FunctionType();
+            dest_cast->~FunctionType();
             break;
     }
 }

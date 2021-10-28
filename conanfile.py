@@ -11,7 +11,7 @@ class EdoToolsConan(ConanFile):
     default_options = {"shared": False}
     generators = "cmake"
     build_requires = (
-        "catch2/2.13.0"
+        "catch2/2.13.7"
     )
     requires = (
         "fmt/8.0.1"
