@@ -10,13 +10,14 @@ class EdoToolsConan(ConanFile):
     options = {"shared": [True, False]}
     default_options = {"shared": False}
     generators = "cmake"
-    build_requires = (
-        "catch2/2.13.7"
-    )
     requires = (
         "fmt/8.0.1"
     )
     exports_sources = "include/*", "src/*", "CMakeLists.txt"
+
+    def build_requirements(self):
+        if not self.in_local_cache:
+            self.build_requires("catch2/2.13.7")
 
     def build(self):
         cmake = CMake(self)
@@ -25,7 +26,7 @@ class EdoToolsConan(ConanFile):
         cmake.configure()
         cmake.build()
         if not self.in_local_cache:
-            cmake.test()
+            cmake.test(output_on_failure=True)
 
     def package(self):
         self.copy("*.cpp", dst="src", src="src")
