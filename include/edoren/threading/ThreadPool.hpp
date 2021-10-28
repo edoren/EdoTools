@@ -15,7 +15,7 @@
 namespace edoren {
 
 template <typename TaskType = Function<void()>>
-class EDOREN_API ThreadPool {
+class ThreadPool {
 public:
     enum class Status { RUNNING, STOPPING, STOPPED };
 
@@ -39,4 +39,4 @@ private:
 
 }  // namespace edoren
 
-#include "ThreadPool.hpp"
+#include "ThreadPool.inl"

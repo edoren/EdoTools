@@ -1,3 +1,5 @@
+#pragma once
+
 #include <mutex>
 #include <thread>
 
@@ -9,13 +11,13 @@ ThreadPool<TaskType>::ThreadPool(size_t num_threads) : m_status(Status::RUNNING)
         while (true) {
             std::unique_lock<std::mutex> lk(m_queue_mutex);
             if (m_status == Status::STOPPED) {
-                return;
+                break;
             }
             if (m_work_queue.empty()) {
                 m_signaler.wait(lk);
             }
             if (m_status == Status::STOPPED) {
-                return;
+                break;
             }
             if (!m_work_queue.empty()) {
                 Task task = std::move(m_work_queue.front());
@@ -43,7 +45,7 @@ ThreadPool<TaskType>::~ThreadPool() {
 template <typename TaskType>
 void ThreadPool<TaskType>::execute(Task&& f) {
     if (m_status == Status::RUNNING) {
-        std::lock_guard(m_queue_mutex);
+        std::lock_guard<std::mutex> lk(m_queue_mutex);
         m_work_queue.push_back(std::move(f));
         m_signaler.notify_one();
     }
@@ -51,8 +53,11 @@ void ThreadPool<TaskType>::execute(Task&& f) {
 
 template <typename TaskType>
 void ThreadPool<TaskType>::joinAndStop() {
-    m_status = Status::STOPPING;
-    m_signaler.notify_all();
+    {
+        std::lock_guard<std::mutex> lk(m_queue_mutex);
+        m_status = m_work_queue.empty() ? Status::STOPPED : Status::STOPPING;
+        m_signaler.notify_all();
+    }
     for (auto& worker : m_workers) {
         worker.join();
     }
