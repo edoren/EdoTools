@@ -116,14 +116,14 @@ public:
     explicit operator bool() const noexcept;
 
     /**
-     * @brief Invoke operator
+     * @brief Function-call operator
      *
      * @param args Arguments to call the internal function
      */
     Ret operator()(Args&&... args);
 
     /**
-     * @brief Invoke const operator
+     * @brief Function-call const operator
      *
      * @param args Arguments to call the internal function
      */

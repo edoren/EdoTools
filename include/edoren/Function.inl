@@ -1,15 +1,9 @@
-#include "TypeTraits.hpp"
+#include <edoren/TypeTraits.hpp>
 
 #include <cassert>
 #include <cstdlib>
 
 #include <utility>
-
-#ifndef LAMBDA_DEFAULT_SIZE
-    #define LAMBDA_DEFAULT_SIZE 6
-#endif
-
-#define LAMBDA_FUNCTION_SIZE(x) (sizeof(void*) * x)
 
 namespace edoren {
 
@@ -73,8 +67,10 @@ Function<Ret(Args...), MaxSize>& Function<Ret(Args...), MaxSize>::operator=(cons
 
 template <typename Ret, typename... Args, size_t MaxSize>
 Function<Ret(Args...), MaxSize>& Function<Ret(Args...), MaxSize>::operator=(Function&& other) noexcept {
-    other.m_manager(&m_data, &other.m_data, Operation::COPY);
-    other.m_manager(&other.m_data, nullptr, Operation::DESTROY);
+    if (other.m_manager != nullptr) {
+        other.m_manager(&m_data, &other.m_data, Operation::COPY);
+        other.m_manager(&other.m_data, nullptr, Operation::DESTROY);
+    }
     m_invoker = std::move(other.m_invoker);
     m_manager = std::move(other.m_manager);
     other.m_invoker = nullptr;

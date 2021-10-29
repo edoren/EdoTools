@@ -4,10 +4,10 @@
         {
             "type": "shell",
             "label": "CMake Build",
-            "command": "cmake",
+            "command": "conan",
             "args": [
-                "--build",
-                "."
+                "build",
+                ".."
             ],
             "options": {
                 "cwd": "${workspaceFolder}/build"
