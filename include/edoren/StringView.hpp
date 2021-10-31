@@ -1,7 +1,7 @@
 #pragma once
 
-#include <edoren/Config.hpp>
 #include <edoren/UTF.hpp>
+#include <edoren/util/Config.hpp>
 
 namespace edoren {
 
@@ -10,7 +10,7 @@ class String;
 /**
  * @brief Utility class to handle a string view to a UTF-8 character sequence
  */
-class EDOREN_API StringView {
+class EDOTOOLS_API StringView {
 public:
     ////////////////////////////////////////////////////////////
     // Types
@@ -347,7 +347,7 @@ bool operator==(const StringView& left, const StringView& right);
  *
  * @return True if both strings are equal
  */
-EDOREN_API std::strong_ordering operator<=>(const StringView& left, const StringView& right);
+EDOTOOLS_API std::strong_ordering operator<=>(const StringView& left, const StringView& right);
 
 /**
  * @relates String
@@ -359,7 +359,7 @@ EDOREN_API std::strong_ordering operator<=>(const StringView& left, const String
  *
  * @return Returns os
  */
-EDOREN_API std::ostream& operator<<(std::ostream& os, const StringView& str);
+EDOTOOLS_API std::ostream& operator<<(std::ostream& os, const StringView& str);
 
 }  // namespace edoren
 

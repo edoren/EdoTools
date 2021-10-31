@@ -1,6 +1,6 @@
 #pragma once
 
-#include <edoren/Config.hpp>
+#include <edoren/util/Config.hpp>
 #include <edoren/Function.hpp>
 #include <edoren/container/Vector.hpp>
 

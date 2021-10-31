@@ -30,10 +30,10 @@
 #include <sstream>
 #include <string>
 
-#include <edoren/Config.hpp>
 #include <edoren/Platform.hpp>
 #include <edoren/StringView.hpp>
 #include <edoren/UTF.hpp>
+#include <edoren/util/Config.hpp>
 
 namespace edoren {
 
@@ -66,7 +66,7 @@ namespace edoren {
  * standard std::basic_string<char> class: removing, random access, iterating,
  * appending, comparing, etc.
  */
-class EDOREN_API String {
+class EDOTOOLS_API String {
 public:
     ////////////////////////////////////////////////////////////
     // Types
@@ -261,7 +261,7 @@ public:
         if (utf::IsValid<utf::UTF_8>(begin, end)) {
             string.m_string.assign(begin, end);
         } else {
-            EDOREN_THROW(std::runtime_error("invalid utf8 convertion."));
+            EDOTOOLS_THROW(std::runtime_error("invalid utf8 convertion."));
         }
         return string;
     }
@@ -847,7 +847,7 @@ private:
  *
  * @return True if both strings are equal
  */
-EDOREN_API bool operator==(const String& left, const String& right);
+EDOTOOLS_API bool operator==(const String& left, const String& right);
 
 /**
  * @relates String
@@ -858,7 +858,7 @@ EDOREN_API bool operator==(const String& left, const String& right);
  *
  * @return True if both strings are equal
  */
-EDOREN_API std::strong_ordering operator<=>(const String& left, const String& right);
+EDOTOOLS_API std::strong_ordering operator<=>(const String& left, const String& right);
 
 /**
  * @relates String
@@ -870,7 +870,7 @@ EDOREN_API std::strong_ordering operator<=>(const String& left, const String& ri
  *
  * @return True if both strings are equal
  */
-EDOREN_API bool operator==(const String& left, const char* right);
+EDOTOOLS_API bool operator==(const String& left, const char* right);
 
 /**
  * @relates String
@@ -882,7 +882,7 @@ EDOREN_API bool operator==(const String& left, const char* right);
  *
  * @return True if both strings are equal
  */
-EDOREN_API std::strong_ordering operator<=>(const String& left, const char* right);
+EDOTOOLS_API std::strong_ordering operator<=>(const String& left, const char* right);
 
 /**
  * @relates String
@@ -894,7 +894,7 @@ EDOREN_API std::strong_ordering operator<=>(const String& left, const char* righ
  *
  * @return True if both strings are equal
  */
-EDOREN_API bool operator==(const char* left, const String& right);
+EDOTOOLS_API bool operator==(const char* left, const String& right);
 
 /**
  * @relates String
@@ -906,47 +906,47 @@ EDOREN_API bool operator==(const char* left, const String& right);
  *
  * @return True if both strings are equal
  */
-EDOREN_API std::strong_ordering operator<=>(const char* left, const String& right);
+EDOTOOLS_API std::strong_ordering operator<=>(const char* left, const String& right);
 
 /**
  * @copydoc std::strong_ordering operator<=>(const String& left, const char* right)
  */
-EDOREN_API bool operator==(const String& left, const char8_t* right);
+EDOTOOLS_API bool operator==(const String& left, const char8_t* right);
 
 /**
  * @copydoc std::strong_ordering operator<=>(const String& left, const char* right)
  */
-EDOREN_API std::strong_ordering operator<=>(const String& left, const char8_t* right);
+EDOTOOLS_API std::strong_ordering operator<=>(const String& left, const char8_t* right);
 
 /**
  * @copydoc bool operator==(const char* left, const String& right)
  */
-EDOREN_API bool operator==(const char8_t* left, const String& right);
+EDOTOOLS_API bool operator==(const char8_t* left, const String& right);
 
 /**
  * @copydoc std::strong_ordering operator<=>(const char* left, const String& right)
  */
-EDOREN_API std::strong_ordering operator<=>(const char8_t* left, const String& right);
+EDOTOOLS_API std::strong_ordering operator<=>(const char8_t* left, const String& right);
 
 /**
  * @copydoc bool operator==(const String& left, const char* right)
  */
-EDOREN_API bool operator==(const String& left, const StringView& right);
+EDOTOOLS_API bool operator==(const String& left, const StringView& right);
 
 /**
  * @copydoc std::strong_ordering operator<=>(const String& left, const char* right)
  */
-EDOREN_API std::strong_ordering operator<=>(const String& left, const StringView& right);
+EDOTOOLS_API std::strong_ordering operator<=>(const String& left, const StringView& right);
 
 /**
  * @copydoc bool operator==(const char* left, const String& right)
  */
-EDOREN_API bool operator==(const StringView& left, const String& right);
+EDOTOOLS_API bool operator==(const StringView& left, const String& right);
 
 /**
  * @copydoc std::strong_ordering operator<=>(const char* left, const String& right)
  */
-EDOREN_API std::strong_ordering operator<=>(const StringView& left, const String& right);
+EDOTOOLS_API std::strong_ordering operator<=>(const StringView& left, const String& right);
 
 /**
  * @relates String
@@ -957,7 +957,7 @@ EDOREN_API std::strong_ordering operator<=>(const StringView& left, const String
  *
  * @return Concatenated string
  */
-EDOREN_API String operator+(const String& left, const String& right);
+EDOTOOLS_API String operator+(const String& left, const String& right);
 
 /**
  * @relates String
@@ -969,7 +969,7 @@ EDOREN_API String operator+(const String& left, const String& right);
  *
  * @return Concatenated string
  */
-EDOREN_API String operator+(const String& left, const char* right);
+EDOTOOLS_API String operator+(const String& left, const char* right);
 
 /**
  * @relates String
@@ -981,17 +981,17 @@ EDOREN_API String operator+(const String& left, const char* right);
  *
  * @return Concatenated string
  */
-EDOREN_API String operator+(const char* left, const String& right);
+EDOTOOLS_API String operator+(const char* left, const String& right);
 
 /**
  * @copydoc String operator+(const String& left, const char* right)
  */
-EDOREN_API String operator+(const String& left, const char8_t* right);
+EDOTOOLS_API String operator+(const String& left, const char8_t* right);
 
 /**
  * @copydoc String operator+(const char* left, const String& right)
  */
-EDOREN_API String operator+(const char8_t* left, const String& right);
+EDOTOOLS_API String operator+(const char8_t* left, const String& right);
 
 /**
  * @relates String
@@ -1003,7 +1003,7 @@ EDOREN_API String operator+(const char8_t* left, const String& right);
  *
  * @return Concatenated string
  */
-EDOREN_API String operator+(const String& left, char right);
+EDOTOOLS_API String operator+(const String& left, char right);
 
 /**
  * @relates String
@@ -1015,7 +1015,7 @@ EDOREN_API String operator+(const String& left, char right);
  *
  * @return Concatenated string
  */
-EDOREN_API String operator+(char left, const String& right);
+EDOTOOLS_API String operator+(char left, const String& right);
 
 /**
  * @relates String
@@ -1027,6 +1027,6 @@ EDOREN_API String operator+(char left, const String& right);
  *
  * @return Returns os
  */
-EDOREN_API std::ostream& operator<<(std::ostream& os, const String& str);
+EDOTOOLS_API std::ostream& operator<<(std::ostream& os, const String& str);
 
 }  // namespace edoren

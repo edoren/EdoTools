@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
 #include <compare>
+#include <string>
 
-#include "PreDef.hpp"
+#include <edoren/util/Config.hpp>
 
 namespace edoren::utf {
 
@@ -46,8 +46,8 @@ constexpr char32_t GetCodePoint8(Iter begin, Iter end) {
     static_assert(sizeof(type::iterator_underlying_type_t<Iter>) == sizeof(char),
                   "Iterator internal type has an invalid size");
 
-    EDOREN_ASSERT((end - begin) != 0, "UTF-8 should have minimum one code unit");
-    EDOREN_ASSERT((end - begin) <= 4, "UTF-8 should have maximum four code units");
+    EDOTOOLS_ASSERT((end - begin) != 0, "UTF-8 should have minimum one code unit");
+    EDOTOOLS_ASSERT((end - begin) <= 4, "UTF-8 should have maximum four code units");
 
     char32_t unicodeCodePoint = 0;
 
@@ -83,8 +83,8 @@ constexpr char32_t GetCodePoint16(Iter begin, Iter end) {
     static_assert(sizeof(type::iterator_underlying_type_t<Iter>) == sizeof(char16_t),
                   "Iterator internal type has an invalid size");
 
-    EDOREN_ASSERT((end - begin) != 0, "UTF-16 should have minimum one code unit");
-    EDOREN_ASSERT((end - begin) <= 2, "UTF-16 should have maximum two code units");
+    EDOTOOLS_ASSERT((end - begin) != 0, "UTF-16 should have minimum one code unit");
+    EDOTOOLS_ASSERT((end - begin) <= 2, "UTF-16 should have maximum two code units");
 
     size_t size = GetUnitSize<UTF_16>(begin);
 
@@ -112,7 +112,7 @@ constexpr char32_t GetCodePoint32(Iter begin, Iter end) {
     static_assert(sizeof(type::iterator_underlying_type_t<Iter>) == sizeof(char32_t),
                   "Iterator internal type has an invalid size");
 
-    EDOREN_ASSERT((end - begin) == 1, "UTF-32 should have minimum one code unit");
+    EDOTOOLS_ASSERT((end - begin) == 1, "UTF-32 should have minimum one code unit");
 
     return *begin & 0x1FFFFF;
 }
@@ -270,7 +270,7 @@ constexpr Iter Prior8(Iter end, Iter begin) {
     static_assert(sizeof(type::iterator_underlying_type_t<Iter>) == sizeof(char),
                   "Iterator internal type has an invalid size");
 
-    EDOREN_ASSERT((end - begin) >= 0, "The end iterator should be same or higher that the begin iterator");
+    EDOTOOLS_ASSERT((end - begin) >= 0, "The end iterator should be same or higher that the begin iterator");
 
     size_t bytesToCheck = (end - begin) >= 4 ? 4 : (end - begin);
 
@@ -295,7 +295,7 @@ constexpr Iter Prior16(Iter end, Iter begin) {
     static_assert(sizeof(type::iterator_underlying_type_t<Iter>) == sizeof(char16_t),
                   "Iterator internal type has an invalid size");
 
-    EDOREN_ASSERT((end - begin) >= 0, "The end iterator should be same or higher that the begin iterator");
+    EDOTOOLS_ASSERT((end - begin) >= 0, "The end iterator should be same or higher that the begin iterator");
 
     auto it = end - 1;
     if ((*it >= 0x0000 && *it <= 0xD7FF) || (*it >= 0xE000 && *it <= 0xFFFF)) {
@@ -316,7 +316,7 @@ constexpr Iter Prior32(Iter end, Iter begin) {
     static_assert(sizeof(type::iterator_underlying_type_t<Iter>) == sizeof(char32_t),
                   "Iterator internal type has an invalid size");
 
-    EDOREN_ASSERT((end - begin) >= 0, "The end iterator should be same or higher that the begin iterator");
+    EDOTOOLS_ASSERT((end - begin) >= 0, "The end iterator should be same or higher that the begin iterator");
 
     return end - 1;
 }
@@ -393,14 +393,14 @@ constexpr CodeUnit<Base>::CodeUnit(Iter begin, const size_type size) {
 
     const auto* pBegin = reinterpret_cast<const value_type*>(&(*begin));
 
-    EDOREN_ASSERT(IsValid<Base>(pBegin, pBegin + size), "Invalid UTF code unit");
+    EDOTOOLS_ASSERT(IsValid<Base>(pBegin, pBegin + size), "Invalid UTF code unit");
 
     if constexpr (Base == UTF_8) {
-        EDOREN_ASSERT(size <= 4, "UTF-8 should have at least four 8 bit values");
+        EDOTOOLS_ASSERT(size <= 4, "UTF-8 should have at least four 8 bit values");
     } else if constexpr (Base == UTF_16) {
-        EDOREN_ASSERT(size <= 2, "UTF-16 should have at least two 16 bit values");
+        EDOTOOLS_ASSERT(size <= 2, "UTF-16 should have at least two 16 bit values");
     } else if constexpr (Base == UTF_32) {
-        EDOREN_ASSERT(size <= 1, "UTF-32 should have at least one 32 bit value");
+        EDOTOOLS_ASSERT(size <= 1, "UTF-32 should have at least one 32 bit value");
     }
 
     m_unit.fill(0x0);
@@ -909,7 +909,7 @@ constexpr bool IsValid(Iter begin, Iter end) {
 // namespace std {
 
 // template <typename Func, Encoding Base, typename T>
-// constexpr decltype(auto) apply(Func&& func, engine::utf::CodeUnit<Base> t) {
+// constexpr decltype(auto) apply(Func&& func, edoren::utf::CodeUnit<Base> t) {
 //     auto [begin, end] = t;
 //     return std::invoke(std::move(func), begin, end);
 // }

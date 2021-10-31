@@ -3,8 +3,6 @@
 #include <optional>
 #include <stdexcept>
 
-#include <edoren/PreDef.hpp>
-
 namespace edoren {
 
 template <typename T, typename Allocator>
@@ -107,7 +105,7 @@ auto Vector<T, Allocator>::first() -> T& {
     if (this->size() > 0) {
         return this->operator[](0);
     }
-    EDOREN_THROW(std::out_of_range("No such element in Vector"));
+    EDOTOOLS_THROW(std::out_of_range("No such element in Vector"));
 }
 
 template <typename T, typename Allocator>
@@ -123,7 +121,7 @@ auto Vector<T, Allocator>::first(Func predicate) -> T& {
             return element;
         }
     }
-    EDOREN_THROW(std::out_of_range("No such element in Vector"));
+    EDOTOOLS_THROW(std::out_of_range("No such element in Vector"));
 }
 
 template <typename T, typename Allocator>

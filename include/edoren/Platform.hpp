@@ -19,7 +19,7 @@
 #define PLATFORM_API_POSIX 0x4
 
 // Find the current platform and platform type
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(_WIN64)
     #define PLATFORM PLATFORM_WINDOWS
     #define PLATFORM_TYPE PLATFORM_TYPE_DESKTOP
 #elif defined(__linux__)
@@ -58,6 +58,6 @@
     #endif
 #endif
 
-#define PLATFORM_IS(x) PLATFORM & (x)
+#define PLATFORM_IS(x) PLATFORM&(x)
 #define PLATFORM_TYPE_IS(x) (PLATFORM_TYPE & (x))
 #define PLATFORM_HAS_API(x) (PLATFORM_APIS & (x))

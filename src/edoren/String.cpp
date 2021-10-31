@@ -58,7 +58,7 @@ String::String(const char* utf8String) {
             if (utf::IsValid<utf::UTF_8>(utf8String, utf8String + length)) {
                 m_string.assign(utf8String);
             } else {
-                EDOREN_THROW(std::runtime_error("invalid utf8 convertion."));
+                EDOTOOLS_THROW(std::runtime_error("invalid utf8 convertion."));
             }
         };
     }
@@ -101,7 +101,7 @@ String::String(const std::basic_string<char>& utf8String) {
         if (utf::IsValid<utf::UTF_8>(utf8String.cbegin(), utf8String.cend())) {
             m_string.assign(utf8String);
         } else {
-            EDOREN_THROW(std::runtime_error("invalid utf8 convertion."));
+            EDOTOOLS_THROW(std::runtime_error("invalid utf8 convertion."));
         }
     };
 }
@@ -111,7 +111,7 @@ String::String(std::basic_string<char>&& utf8String) {
         if (utf::IsValid<utf::UTF_8>(utf8String.cbegin(), utf8String.cend())) {
             m_string = std::move(utf8String);
         } else {
-            EDOREN_THROW(std::runtime_error("invalid utf8 convertion."));
+            EDOTOOLS_THROW(std::runtime_error("invalid utf8 convertion."));
         }
     };
 }
@@ -121,7 +121,7 @@ String::String(const std::basic_string<char8_t>& utf8String) {
         if (utf::IsValid<utf::UTF_8>(utf8String.cbegin(), utf8String.cend())) {
             m_string.assign(reinterpret_cast<const char*>(utf8String.data()), utf8String.size());
         } else {
-            EDOREN_THROW(std::runtime_error("invalid utf8 convertion."));
+            EDOTOOLS_THROW(std::runtime_error("invalid utf8 convertion."));
         }
     };
 }
@@ -155,7 +155,7 @@ String String::FromUtf8(const char* begin, const char* end) {
     if (utf::IsValid<utf::UTF_8>(begin, end)) {
         string.m_string.assign(begin, end);
     } else {
-        EDOREN_THROW(std::runtime_error("invalid utf8 convertion."));
+        EDOTOOLS_THROW(std::runtime_error("invalid utf8 convertion."));
     }
     return string;
 }
@@ -294,7 +294,7 @@ bool String::isEmpty() const {
 void String::erase(size_type position, size_type count) {
     size_type utf8StrSize = getSize();
     if ((position + count) > utf8StrSize) {
-        EDOREN_THROW(std::out_of_range("the specified position is out of the string range"));
+        EDOTOOLS_THROW(std::out_of_range("the specified position is out of the string range"));
     }
 
     // Iterate to the start and end codepoint
@@ -310,7 +310,7 @@ void String::erase(size_type position, size_type count) {
 void String::insert(size_type position, const StringView& str) {
     size_type utf8StrSize = getSize();
     if (position >= utf8StrSize) {
-        EDOREN_THROW(std::out_of_range("the specified position is out of the string range"));
+        EDOTOOLS_THROW(std::out_of_range("the specified position is out of the string range"));
     }
 
     // Iterate to the start codepoint
@@ -371,7 +371,7 @@ String::size_type String::findLastOf(const StringView& str, size_type pos) const
 void String::replace(size_type position, size_type length, const StringView& replaceWith) {
     size_type utf8StrSize = getSize();
     if ((position + length) > utf8StrSize) {
-        EDOREN_THROW(std::out_of_range("the specified position is out of the string range"));
+        EDOTOOLS_THROW(std::out_of_range("the specified position is out of the string range"));
     }
 
     // Iterate to the start and end codepoint
@@ -424,7 +424,7 @@ void String::replace(const StringView& searchFor, const StringView& replaceWith)
 String String::subString(size_type position, size_type length) const {
     size_type utf8StrSize = getSize();
     if ((position + length) > utf8StrSize) {
-        EDOREN_THROW(std::out_of_range("the specified position is out of the string range"));
+        EDOTOOLS_THROW(std::out_of_range("the specified position is out of the string range"));
     }
 
     // Iterate to the start and end codepoint

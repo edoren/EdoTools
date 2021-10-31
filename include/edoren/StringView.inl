@@ -15,7 +15,7 @@ constexpr StringView::StringView(const char* utf8String) {
                 m_data = utf8String;
                 m_size = length;
             } else {
-                EDOREN_THROW(std::runtime_error("invalid utf8 convertion."));
+                EDOTOOLS_THROW(std::runtime_error("invalid utf8 convertion."));
             }
         };
     }
@@ -34,7 +34,7 @@ constexpr StringView& StringView::operator=(const char* right) {
                 m_data = utf8String;
                 m_size = length;
             } else {
-                EDOREN_THROW(std::runtime_error("invalid utf8 convertion."));
+                EDOTOOLS_THROW(std::runtime_error("invalid utf8 convertion."));
             }
         };
     }
@@ -104,7 +104,7 @@ constexpr StringView::size_type StringView::findLastOf(const StringView& str, si
 constexpr StringView StringView::subString(size_type position, size_type length) const {
     size_type utf8StrSize = getSize();
     if ((position + length) > utf8StrSize) {
-        EDOREN_THROW(std::out_of_range("the specified position is out of the string range"));
+        EDOTOOLS_THROW(std::out_of_range("the specified position is out of the string range"));
     }
 
     // Iterate to the start and end codepoint

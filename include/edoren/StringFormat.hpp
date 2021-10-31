@@ -6,7 +6,7 @@
 // #define FMT_HEADER_ONLY
 // #define FMT_USE_WINDOWS_H 0
 // #define FMT_USE_USER_DEFINED_LITERALS 0
-// #ifndef EDOREN_EXPORTS
+// #ifndef EDOTOOLS_EXPORTS
 //     #define FMT_SHARED 0
 // #endif
 #include <fmt/format.h>
@@ -31,7 +31,7 @@ inline UdlStringFormatProxy<char> operator""_format(const char* str, size_t /*un
     return {str};
 }
 
-inline UdlStringFormatProxy<wchar> operator""_format(const wchar* str, size_t /*unused*/) {
+inline UdlStringFormatProxy<wchar_t> operator""_format(const wchar_t* str, size_t /*unused*/) {
     return {str};
 }
 
@@ -40,14 +40,14 @@ inline UdlStringFormatProxy<wchar> operator""_format(const wchar* str, size_t /*
 FMT_BEGIN_NAMESPACE
 
 template <typename T, typename Allocator>
-struct formatter<engine::Vector<T, Allocator>> {
+struct formatter<edoren::Vector<T, Allocator>> {
     template <typename ParseContext>
     constexpr auto parse(ParseContext& ctx) {
         return ctx.begin();
     }
 
     template <typename FormatContext = format_context>
-    auto format(const engine::Vector<T, Allocator>& v, FormatContext& ctx) {
+    auto format(const edoren::Vector<T, Allocator>& v, FormatContext& ctx) {
         return fmt::format_to(ctx.out(), "[{}]", fmt::join(v, ", "));
     }
 };
