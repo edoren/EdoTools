@@ -8,48 +8,48 @@ namespace edoren {
 template <typename T, typename Allocator>
 template <typename Func>
 auto Vector<T, Allocator>::map(Func transform) const -> Vector<std::invoke_result_t<decltype(transform), const T&>> {
-    Vector<std::invoke_result_t<decltype(transform), const T&>> newVec;
-    newVec.reserve(this->size());
+    Vector<std::invoke_result_t<decltype(transform), const T&>> new_vec;
+    new_vec.reserve(this->size());
     for (const auto& element : *this) {
-        newVec.push_back(transform(element));
+        new_vec.push_back(transform(element));
     }
-    return newVec;
+    return new_vec;
 }
 
 template <typename T, typename Allocator>
 template <typename Func>
 auto Vector<T, Allocator>::mapIndexed(Func transform) const
     -> Vector<std::invoke_result_t<decltype(transform), size_t, const T&>> {
-    Vector<std::invoke_result_t<decltype(transform), size_t, const T&>> newVec;
-    newVec.reserve(this->size());
+    Vector<std::invoke_result_t<decltype(transform), size_t, const T&>> new_vec;
+    new_vec.reserve(this->size());
     for (decltype(this->size()) i = 0; i < this->size(); i++) {
-        newVec.push_back(transform(i, this->operator[](i)));
+        new_vec.push_back(transform(i, this->operator[](i)));
     }
-    return newVec;
+    return new_vec;
 }
 
 template <typename T, typename Allocator>
 template <typename Func>
 auto Vector<T, Allocator>::filter(Func predicate) const -> Vector<T> {
-    Vector<T> newVec;
+    Vector<T> new_vec;
     for (const auto& element : *this) {
         if (predicate(element)) {
-            newVec.push_back(element);
+            new_vec.push_back(element);
         }
     }
-    return newVec;
+    return new_vec;
 }
 
 template <typename T, typename Allocator>
 template <typename Func>
 auto Vector<T, Allocator>::filterIndexed(Func predicate) const -> Vector<T> {
-    Vector<T> newVec;
+    Vector<T> new_vec;
     for (decltype(this->size()) i = 0; i < this->size(); i++) {
         if (predicate(i, this->operator[](i))) {
-            newVec.push_back(this->operator[](i));
+            new_vec.push_back(this->operator[](i));
         }
     }
-    return newVec;
+    return new_vec;
 }
 
 template <typename T, typename Allocator>

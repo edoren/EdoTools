@@ -292,6 +292,23 @@ TEST_CASE("String::operator[]", "[String]") {
     }
 }
 
+TEST_CASE("String::subString", "[String]") {
+    // "😀😃😄😁😆"
+    String faces = u8"\U0001F600\U0001F603\U0001F604\U0001F601\U0001F606";
+    // "水、火、地、風、空"
+    String elements(u8"\U00006C34\U00003001\U0000706B\U00003001\U00005730\U00003001\U000098A8\U00003001\U00007A7A");
+
+    SECTION("Can get any sub-string from the initial string") {
+        REQUIRE(faces.subString(1, 3) == u8"\U0001F603\U0001F604\U0001F601");  // "😃😄😁"
+    }
+    SECTION("If no length is specified it should return a sub string to the end") {
+        REQUIRE(elements.subString(4) == u8"\U00005730\U00003001\U000098A8\U00003001\U00007A7A");  // "😃😄😁"
+    }
+    SECTION("String::sInvalidPos") {
+        REQUIRE(faces.subString(5, String::sInvalidPos) == u8"\U0001F606");  // "😆"
+    }
+}
+
 TEST_CASE("String::operator+=", "[String]") {
     String string;
 
