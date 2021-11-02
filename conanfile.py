@@ -53,3 +53,9 @@ class EdoToolsConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = [self.name]
+        if not self.options.shared:
+            self.cpp_info.defines.append("EDOTOOLS_STATIC")
+        if self.options.fmt_json_support:
+            self.cpp_info.defines.append("EDOTOOLS_FMT_SUPPORT")
+        if self.options.nlohmann_json_support:
+            self.cpp_info.defines.append("EDOTOOLS_NLOHMANN_JSON_SUPPORT")
