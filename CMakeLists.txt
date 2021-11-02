@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_define_targets()
+conan_basic_setup(TARGETS)
 
 option(FMT_SUPPORT "Enable the support integration with fmt library" ON)
 option(NLOHMANN_JSON_SUPPORT "Enable the support integration with nlohmann json library" ON)
@@ -23,6 +23,9 @@ file(GLOB_RECURSE EDOTOOLS_INCLUDE_FILES
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_library(${PROJECT_NAME} ${EDOTOOLS_SOURCE_FILES} ${EDOTOOLS_INCLUDE_FILES})
+
+string(TOLOWER ${PROJECT_NAME} EDOTOOLS_LIB)
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME ${EDOTOOLS_LIB})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES DEFINE_SYMBOL "EDOTOOLS_EXPORTS")
 if(NOT BUILD_SHARED_LIBS)
