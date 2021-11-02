@@ -30,12 +30,17 @@
 #include <sstream>
 #include <string>
 
-#include <fmt/format.h>
-
 #include <edoren/Platform.hpp>
 #include <edoren/StringView.hpp>
 #include <edoren/UTF.hpp>
 #include <edoren/util/Config.hpp>
+
+#ifdef EDOTOOLS_FMT_SUPPORT
+    #include <fmt/format.h>
+#endif
+#ifdef EDOTOOLS_NLOHMANN_JSON_SUPPORT
+    #include <nlohmann/json.hpp>
+#endif
 
 namespace edoren {
 
@@ -1045,6 +1050,7 @@ EDOTOOLS_API StringFormatProxy<wchar_t> operator""_format(const wchar_t* str, si
 
 }  // namespace edoren
 
+#ifdef EDOTOOLS_FMT_SUPPORT
 // See https://fmt.dev/latest/api.html#formatting-user-defined-types
 
 template <>
@@ -1053,10 +1059,33 @@ struct fmt::formatter<edoren::String> {
         return ctx.begin();
     }
 
-    // Formats the point p using the parsed format specification (presentation)
-    // stored in this formatter.
     template <typename FormatContext = fmt::format_context>
     auto format(const edoren::String& s, FormatContext& ctx) -> decltype(ctx.out()) {
         return format_to(ctx.out(), "{}", s.toUtf8());
     }
 };
+
+#endif  // EDOTOOLS_FMT_SUPPORT
+
+#ifdef EDOTOOLS_NLOHMANN_JSON_SUPPORT
+
+namespace nlohmann {
+
+template <>
+struct adl_serializer<edoren::String> {
+    static void to_json(json& j, const edoren::String& s) {
+        j = nlohmann::json(s.toUtf8());
+    }
+
+    static void from_json(const json& j, edoren::String& s) {
+        s = std::move(std::string(j));
+    }
+};
+
+}  // namespace nlohmann
+
+EDOTOOLS_API void to_json(nlohmann::json& j, const edoren::String& s);
+
+EDOTOOLS_API void from_json(const nlohmann::json& j, edoren::String& s);
+
+#endif  // EDOTOOLS_NLOHMANN_JSON_SUPPORT

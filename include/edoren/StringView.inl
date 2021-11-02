@@ -172,11 +172,21 @@ inline std::strong_ordering operator<=>(const StringView& left, const StringView
     return std::lexicographical_compare_three_way(left.cbegin(), left.cend(), right.cbegin(), right.cend());
 }
 
+inline bool operator==(const StringView& left, const char* right) {
+    return left == StringView(right);
+}
+
+inline bool operator==(const char* left, const StringView& right) {
+    return StringView(left) == right;
+}
+
 inline std::ostream& operator<<(std::ostream& os, const StringView& str) {
     return os.write(str.getData(), str.getSize());
 }
 
 }  // namespace edoren
+
+#ifdef EDOTOOLS_FMT_SUPPORT
 
 constexpr auto fmt::formatter<edoren::StringView>::parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin()) {
     return ctx.begin();
@@ -188,3 +198,5 @@ auto fmt::formatter<edoren::StringView, char, void>::format(const edoren::String
     format_to_n(ctx.out(), s.getDataSize(), "{}", s.getData());
     return appender(ctx.out());
 }
+
+#endif  // EDOTOOLS_FMT_SUPPORT

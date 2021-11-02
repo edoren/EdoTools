@@ -1,9 +1,14 @@
 #pragma once
 
-#include <fmt/format.h>
-
 #include <edoren/UTF.hpp>
 #include <edoren/util/Config.hpp>
+
+#ifdef EDOTOOLS_FMT_SUPPORT
+    #include <fmt/format.h>
+#endif
+#ifdef EDOTOOLS_NLOHMANN_JSON_SUPPORT
+    #include <nlohmann/json.hpp>
+#endif
 
 namespace edoren {
 
@@ -342,6 +347,28 @@ bool operator==(const StringView& left, const StringView& right);
 
 /**
  * @relates String
+ * @brief Overload of == operator to compare two strings
+ *
+ * @param left  Left operand (a StringView)
+ * @param right Right operand (a const char*)
+ *
+ * @return True if both strings are equal
+ */
+bool operator==(const StringView& left, const char* right);
+
+/**
+ * @relates String
+ * @brief Overload of == operator to compare two strings
+ *
+ * @param left  Left operand (a const char*)
+ * @param right Right operand (a StringView)
+ *
+ * @return True if both strings are equal
+ */
+bool operator==(const char* left, const StringView& right);
+
+/**
+ * @relates String
  * @brief Overload of <=> operator to compare two StringView
  *
  * @param left  Left operand (a StringView)
@@ -365,6 +392,7 @@ EDOTOOLS_API std::ostream& operator<<(std::ostream& os, const StringView& str);
 
 }  // namespace edoren
 
+#ifdef EDOTOOLS_FMT_SUPPORT
 // See https://fmt.dev/latest/api.html#formatting-user-defined-types
 
 template <>
@@ -374,5 +402,20 @@ struct fmt::formatter<edoren::StringView> {
     template <typename FormatContext = fmt::format_context>
     auto format(const edoren::StringView& s, FormatContext& ctx) -> decltype(ctx.out());
 };
+
+#endif  // EDOTOOLS_FMT_SUPPORT
+
+#ifdef EDOTOOLS_NLOHMANN_JSON_SUPPORT
+
+namespace nlohmann {
+
+template <>
+struct adl_serializer<edoren::StringView> {
+    static void to_json(json& j, const edoren::StringView& s);
+};
+
+}  // namespace nlohmann
+
+#endif  // EDOTOOLS_NLOHMANN_JSON_SUPPORT
 
 #include "StringView.inl"

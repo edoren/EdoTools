@@ -1,9 +1,14 @@
 #pragma once
 
-#include <fmt/format.h>
-
 #include <optional>
 #include <vector>
+
+#ifdef EDOTOOLS_FMT_SUPPORT
+    #include <fmt/format.h>
+#endif
+#ifdef EDOTOOLS_NLOHMANN_JSON_SUPPORT
+    #include <nlohmann/json.hpp>
+#endif
 
 namespace edoren {
 
@@ -72,6 +77,7 @@ public:
 
 }  // namespace edoren
 
+#ifdef EDOTOOLS_FMT_SUPPORT
 // See https://fmt.dev/latest/api.html#formatting-user-defined-types
 
 template <typename T, typename Allocator>
@@ -81,5 +87,21 @@ struct fmt::formatter<edoren::Vector<T, Allocator>> {
     template <typename FormatContext = format_context>
     auto format(const edoren::Vector<T, Allocator>& v, FormatContext& ctx) -> decltype(ctx.out());
 };
+
+#endif  // EDOTOOLS_FMT_SUPPORT
+
+#ifdef EDOTOOLS_NLOHMANN_JSON_SUPPORT
+
+namespace nlohmann {
+
+template <typename T, typename Allocator>
+struct adl_serializer<edoren::Vector<T, Allocator>> {
+    static void to_json(json& j, const edoren::Vector<T, Allocator>& v);
+    static void from_json(const json& j, edoren::Vector<T, Allocator>& v);
+};
+
+}  // namespace nlohmann
+
+#endif  // EDOTOOLS_NLOHMANN_JSON_SUPPORT
 
 #include "Vector.inl"

@@ -162,6 +162,8 @@ auto Vector<T, Allocator>::firstOrNull(Func predicate) const -> const T* {
 
 }  // namespace edoren
 
+#ifdef EDOTOOLS_FMT_SUPPORT
+
 template <typename T, typename Allocator>
 constexpr auto fmt::formatter<edoren::Vector<T, Allocator>>::parse(fmt::format_parse_context& ctx)
     -> decltype(ctx.begin()) {
@@ -174,3 +176,32 @@ auto fmt::formatter<edoren::Vector<T, Allocator>>::format(const edoren::Vector<T
     -> decltype(ctx.out()) {
     return format_to(ctx.out(), "[{}]", join(v, ", "));
 }
+
+#endif  // EDOTOOLS_FMT_SUPPORT
+
+#ifdef EDOTOOLS_NLOHMANN_JSON_SUPPORT
+
+namespace nlohmann {
+
+template <typename T, typename Allocator>
+void adl_serializer<edoren::Vector<T, Allocator>>::to_json(json& j, const edoren::Vector<T, Allocator>& v) {
+    j = json::array();
+    for (auto& e : v) {
+        j.push_back(e);
+    }
+}
+
+template <typename T, typename Allocator>
+void adl_serializer<edoren::Vector<T, Allocator>>::from_json(const json& j, edoren::Vector<T, Allocator>& v) {
+    if (j.is_array()) {
+        v.clear();
+        v.reserve(j.size());
+        for (auto& e : j) {
+            v.push_back(T(e));
+        }
+    }
+}
+
+}  // namespace nlohmann
+
+#endif  // EDOTOOLS_NLOHMANN_JSON_SUPPORT

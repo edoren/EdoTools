@@ -19,3 +19,16 @@ StringView& StringView::operator=(const char8_t* right) {
 }
 
 }  // namespace edoren
+
+#ifdef EDOTOOLS_NLOHMANN_JSON_SUPPORT
+
+namespace nlohmann {
+
+void adl_serializer<edoren::StringView>::to_json(json& j, const edoren::StringView& s) {
+    auto tmp = std::string(s.getData(), s.getData() + s.getDataSize());
+    j = std::move(tmp);
+}
+
+}  // namespace nlohmann
+
+#endif  // EDOTOOLS_NLOHMANN_JSON_SUPPORT

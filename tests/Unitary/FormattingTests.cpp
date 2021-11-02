@@ -6,8 +6,7 @@
 
 using namespace edoren;
 
-TEST_CASE("StringView", "[Formatting]") {
-    // "水、火、地、風、空"
+TEST_CASE("StringView formatting", "[Formatting]") {
     StringView hello = "Hello World";
 
     SECTION("must be able to find any UTF-8 string") {
@@ -16,8 +15,7 @@ TEST_CASE("StringView", "[Formatting]") {
     }
 }
 
-TEST_CASE("String", "[Formatting]") {
-    // "水、火、地、風、空"
+TEST_CASE("String formatting", "[Formatting]") {
     String hello = "Hello World";
 
     SECTION("must be able to find any UTF-8 string") {
@@ -26,7 +24,7 @@ TEST_CASE("String", "[Formatting]") {
     }
 }
 
-TEST_CASE("Vector", "[Formatting]") {
+TEST_CASE("Vector formatting", "[Formatting]") {
     Vector<String> vocabulary = {"A", "B", "C", "D", "E", "F", "G"};
 
     SECTION("must be able to find any UTF-8 string") {
