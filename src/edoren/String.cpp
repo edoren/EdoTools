@@ -582,12 +582,6 @@ std::ostream& operator<<(std::ostream& os, const String& str) {
     return os << str.toUtf8();
 }
 
-template <typename Char>
-template <typename... Args>
-String StringFormatProxy<Char>::operator()(Args&&... args) const {
-    return String(std::move(format(str, std::forward<Args>(args)...)));
-}
-
 StringFormatProxy<char> operator""_format(const char* str, size_t /*unused*/) {
     return {str};
 }

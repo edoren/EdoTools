@@ -9,7 +9,7 @@ using namespace edoren;
 TEST_CASE("StringView formatting", "[Formatting]") {
     StringView hello = "Hello World";
 
-    SECTION("must be able to find any UTF-8 string") {
+    SECTION("fmt::format can receive type") {
         String formatted = fmt::format("{}-{}", hello.subString(0, 5), 10);
         REQUIRE(formatted == "Hello-10");
     }
@@ -18,8 +18,12 @@ TEST_CASE("StringView formatting", "[Formatting]") {
 TEST_CASE("String formatting", "[Formatting]") {
     String hello = "Hello World";
 
-    SECTION("must be able to find any UTF-8 string") {
+    SECTION("fmt::format can receive type") {
         String formatted = fmt::format("{}-{}", hello.subString(0, 5), 10);
+        REQUIRE(formatted == "Hello-10");
+    }
+    SECTION("_format string literal") {
+        String formatted = "{}-{}"_format(hello.subString(0, 5), 10);
         REQUIRE(formatted == "Hello-10");
     }
 }
@@ -27,7 +31,7 @@ TEST_CASE("String formatting", "[Formatting]") {
 TEST_CASE("Vector formatting", "[Formatting]") {
     Vector<String> vocabulary = {"A", "B", "C", "D", "E", "F", "G"};
 
-    SECTION("must be able to find any UTF-8 string") {
+    SECTION("fmt::format can receive type") {
         String formatted = fmt::format("{}", vocabulary);
         REQUIRE(formatted == "[A, B, C, D, E, F, G]");
     }

@@ -1041,7 +1041,9 @@ struct StringFormatProxy {
     const Char* str;
 
     template <typename... Args>
-    String operator()(Args&&... args) const;
+    String operator()(Args&&... args) const {
+        return String(std::move(fmt::format(str, std::forward<Args>(args)...)));
+    }
 };
 
 EDOTOOLS_API StringFormatProxy<char> operator""_format(const char* str, size_t /*unused*/);
