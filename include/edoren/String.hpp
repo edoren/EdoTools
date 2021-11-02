@@ -1042,7 +1042,8 @@ struct StringFormatProxy {
 
     template <typename... Args>
     String operator()(Args&&... args) const {
-        return String(std::move(fmt::format(str, std::forward<Args>(args)...)));
+        auto s = fmt::vformat(str, fmt::make_format_args(std::forward<Args>(args)...));
+        return String(std::move(s));
     }
 };
 
