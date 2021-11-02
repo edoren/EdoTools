@@ -197,7 +197,8 @@ void adl_serializer<edoren::Vector<T, Allocator>>::from_json(const json& j, edor
         v.clear();
         v.reserve(j.size());
         for (auto& e : j) {
-            v.push_back(T(e));
+            T val = e;
+            v.push_back(std::move(val));
         }
     }
 }
