@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fmt/format.h>
+
 #include <optional>
 #include <vector>
 
@@ -69,5 +71,15 @@ public:
 };
 
 }  // namespace edoren
+
+// See https://fmt.dev/latest/api.html#formatting-user-defined-types
+
+template <typename T, typename Allocator>
+struct fmt::formatter<edoren::Vector<T, Allocator>> {
+    constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin());
+
+    template <typename FormatContext = format_context>
+    auto format(const edoren::Vector<T, Allocator>& v, FormatContext& ctx) -> decltype(ctx.out());
+};
 
 #include "Vector.inl"

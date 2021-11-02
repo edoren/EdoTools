@@ -161,3 +161,16 @@ auto Vector<T, Allocator>::firstOrNull(Func predicate) const -> const T* {
 }
 
 }  // namespace edoren
+
+template <typename T, typename Allocator>
+constexpr auto fmt::formatter<edoren::Vector<T, Allocator>>::parse(fmt::format_parse_context& ctx)
+    -> decltype(ctx.begin()) {
+    return ctx.begin();
+}
+
+template <typename T, typename Allocator>
+template <typename FormatContext>
+auto fmt::formatter<edoren::Vector<T, Allocator>>::format(const edoren::Vector<T, Allocator>& v, FormatContext& ctx)
+    -> decltype(ctx.out()) {
+    return format_to(ctx.out(), "[{}]", join(v, ", "));
+}

@@ -53,7 +53,7 @@ String::String(char32_t utf32Char) {
 
 String::String(const char* utf8String) {
     if (utf8String && utf8String[0] != 0) {
-        size_type length = std::strlen(utf8String);
+        size_type length = std::char_traits<char>::length(utf8String);
         if (length > 0) {
             if (utf::IsValid<utf::UTF_8>(utf8String, utf8String + length)) {
                 m_string.assign(utf8String);
@@ -580,6 +580,20 @@ String operator+(char left, const String& right) {
 
 std::ostream& operator<<(std::ostream& os, const String& str) {
     return os << str.toUtf8();
+}
+
+template <typename Char>
+template <typename... Args>
+String StringFormatProxy<Char>::operator()(Args&&... args) const {
+    return String(std::move(format(str, std::forward<Args>(args)...)));
+}
+
+StringFormatProxy<char> operator""_format(const char* str, size_t /*unused*/) {
+    return {str};
+}
+
+StringFormatProxy<wchar_t> operator""_format(const wchar_t* str, size_t /*unused*/) {
+    return {str};
 }
 
 }  // namespace edoren

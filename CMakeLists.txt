@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+conan_define_targets()
 
 file(GLOB_RECURSE EDOTOOLS_SOURCE_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -20,6 +20,7 @@ file(GLOB_RECURSE EDOTOOLS_INCLUDE_FILES
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_library(${PROJECT_NAME} ${EDOTOOLS_SOURCE_FILES} ${EDOTOOLS_INCLUDE_FILES})
+target_link_libraries(${PROJECT_NAME} CONAN_PKG::fmt)
 set_target_properties(${PROJECT_NAME} PROPERTIES DEFINE_SYMBOL "EDOTOOLS_EXPORTS")
 if(NOT BUILD_SHARED_LIBS)
     target_compile_definitions(${PROJECT_NAME} PUBLIC EDOTOOLS_STATIC)

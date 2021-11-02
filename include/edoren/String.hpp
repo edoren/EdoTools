@@ -30,6 +30,8 @@
 #include <sstream>
 #include <string>
 
+#include <fmt/format.h>
+
 #include <edoren/Platform.hpp>
 #include <edoren/StringView.hpp>
 #include <edoren/UTF.hpp>
@@ -385,7 +387,7 @@ public:
      *
      * @return Converted UTF-8 string
      *
-     * @see ToUtf8
+     * @see toUtf8
      * @see operator std::basic_string<char16_t>
      * @see operator std::basic_string<char32_t>
      * @see operator std::basic_string<wchar_t>
@@ -1029,4 +1031,32 @@ EDOTOOLS_API String operator+(char left, const String& right);
  */
 EDOTOOLS_API std::ostream& operator<<(std::ostream& os, const String& str);
 
+template <typename Char>
+struct StringFormatProxy {
+    const Char* str;
+
+    template <typename... Args>
+    String operator()(Args&&... args) const;
+};
+
+EDOTOOLS_API StringFormatProxy<char> operator""_format(const char* str, size_t /*unused*/);
+
+EDOTOOLS_API StringFormatProxy<wchar_t> operator""_format(const wchar_t* str, size_t /*unused*/);
+
 }  // namespace edoren
+
+// See https://fmt.dev/latest/api.html#formatting-user-defined-types
+
+template <>
+struct fmt::formatter<edoren::String> {
+    constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin()) {
+        return ctx.begin();
+    }
+
+    // Formats the point p using the parsed format specification (presentation)
+    // stored in this formatter.
+    template <typename FormatContext = fmt::format_context>
+    auto format(const edoren::String& s, FormatContext& ctx) -> decltype(ctx.out()) {
+        return format_to(ctx.out(), "{}", s.toUtf8());
+    }
+};

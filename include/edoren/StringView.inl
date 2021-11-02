@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <string>
 
 #include <cstring>
 
@@ -9,7 +10,7 @@ namespace edoren {
 
 constexpr StringView::StringView(const char* utf8String) {
     if (utf8String && utf8String[0] != 0) {
-        size_type length = std::strlen(utf8String);
+        size_type length = std::char_traits<char>::length(utf8String);
         if (length > 0) {
             if (utf::IsValid<utf::UTF_8>(utf8String, utf8String + length)) {
                 m_data = utf8String;
@@ -28,7 +29,7 @@ constexpr StringView& StringView::operator=(const StringView& right) = default;
 constexpr StringView& StringView::operator=(const char* right) {
     const auto* utf8String = right;
     if (utf8String && utf8String[0] != 0) {
-        size_type length = std::strlen(utf8String);
+        size_type length = std::char_traits<char>::length(utf8String);
         if (length > 0) {
             if (utf::IsValid<utf::UTF_8>(utf8String, utf8String + length)) {
                 m_data = utf8String;
@@ -176,3 +177,14 @@ inline std::ostream& operator<<(std::ostream& os, const StringView& str) {
 }
 
 }  // namespace edoren
+
+constexpr auto fmt::formatter<edoren::StringView>::parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin()) {
+    return ctx.begin();
+}
+
+template <typename FormatContext>
+auto fmt::formatter<edoren::StringView, char, void>::format(const edoren::StringView& s, FormatContext& ctx)
+    -> decltype(ctx.out()) {
+    format_to_n(ctx.out(), s.getDataSize(), "{}", s.getData());
+    return appender(ctx.out());
+}

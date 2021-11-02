@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fmt/format.h>
+
 #include <edoren/UTF.hpp>
 #include <edoren/util/Config.hpp>
 
@@ -362,5 +364,15 @@ EDOTOOLS_API std::strong_ordering operator<=>(const StringView& left, const Stri
 EDOTOOLS_API std::ostream& operator<<(std::ostream& os, const StringView& str);
 
 }  // namespace edoren
+
+// See https://fmt.dev/latest/api.html#formatting-user-defined-types
+
+template <>
+struct fmt::formatter<edoren::StringView> {
+    constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin());
+
+    template <typename FormatContext = fmt::format_context>
+    auto format(const edoren::StringView& s, FormatContext& ctx) -> decltype(ctx.out());
+};
 
 #include "StringView.inl"
