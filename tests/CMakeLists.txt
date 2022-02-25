@@ -6,6 +6,7 @@ set(UNITARY_TEST_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/StringTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/StringViewTests.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/UTFTests.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/VectorTests.cpp
 )
 
 if(FMT_SUPPORT)

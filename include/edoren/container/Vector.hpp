@@ -12,12 +12,12 @@
 
 namespace edoren {
 
-template <typename T, typename Allocator = std::allocator<T>>
-class Vector : public std::vector<T, Allocator> {
+template <typename T>
+class Vector : public std::pmr::vector<T> {
 public:
-    using std::vector<T, Allocator>::vector;
-    using std::vector<T, Allocator>::operator=;
-    using std::vector<T, Allocator>::operator[];
+    using std::pmr::vector<T>::vector;
+    using std::pmr::vector<T>::operator=;
+    using std::pmr::vector<T>::operator[];
 
     Vector(const Vector& other) = default;
     Vector& operator=(const Vector& other) = default;
@@ -25,10 +25,10 @@ public:
     Vector& operator=(Vector&& other) noexcept = default;
 
     template <typename Func>
-    auto map(Func transform) const -> Vector<std::invoke_result_t<decltype(transform), const T&>>;
+    auto map(Func transform) const -> Vector<std::invoke_result_t<Func, const T&>>;
 
     template <typename Func>
-    auto mapIndexed(Func transform) const -> Vector<std::invoke_result_t<decltype(transform), size_t, const T&>>;
+    auto mapIndexed(Func transform) const -> Vector<std::invoke_result_t<Func, size_t, const T&>>;
 
     template <typename Func>
     auto filter(Func predicate) const -> Vector<T>;
@@ -80,12 +80,12 @@ public:
 #ifdef EDOTOOLS_FMT_SUPPORT
 // See https://fmt.dev/latest/api.html#formatting-user-defined-types
 
-template <typename T, typename Allocator>
-struct fmt::formatter<edoren::Vector<T, Allocator>> {
+template <typename T>
+struct fmt::formatter<edoren::Vector<T>> {
     constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin());
 
     template <typename FormatContext = format_context>
-    auto format(const edoren::Vector<T, Allocator>& v, FormatContext& ctx) -> decltype(ctx.out());
+    auto format(const edoren::Vector<T>& v, FormatContext& ctx) -> decltype(ctx.out());
 };
 
 #endif  // EDOTOOLS_FMT_SUPPORT
@@ -94,10 +94,10 @@ struct fmt::formatter<edoren::Vector<T, Allocator>> {
 
 namespace nlohmann {
 
-template <typename T, typename Allocator>
-struct adl_serializer<edoren::Vector<T, Allocator>> {
-    static void to_json(json& j, const edoren::Vector<T, Allocator>& v);
-    static void from_json(const json& j, edoren::Vector<T, Allocator>& v);
+template <typename T>
+struct adl_serializer<edoren::Vector<T>> {
+    static void to_json(json& j, const edoren::Vector<T>& v);
+    static void from_json(const json& j, edoren::Vector<T>& v);
 };
 
 }  // namespace nlohmann
