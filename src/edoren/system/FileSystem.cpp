@@ -107,9 +107,10 @@ const String& ExecutableDirectory() {
         WCHAR path[PATH_MAX_LENGTH];
         GetModuleFileNameW(NULL, path, PATH_MAX_LENGTH);
         sExecutableDirectory = path;
+        sExecutableDirectory = sExecutableDirectory.subString(0, sExecutableDirectory.findLastOf("\\"));
 #elif PLATFORM_IS(PLATFORM_LINUX | PLATFORM_MACOS)
         char result[PATH_MAX] = {};
-        ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+        size_t count = readlink("/proc/self/exe", result, PATH_MAX);
         if (count != -1) {
             sExecutableDirectory = dirname(result);
         }
@@ -118,6 +119,7 @@ const String& ExecutableDirectory() {
 #elif PLATFORM_IS(PLATFORM_IOS | PLATFORM_ANDROID)
         static_assert(true, "Missing implementation");
 #endif
+        sExecutableDirectory = filesystem::NormalizePath(sExecutableDirectory);
     }
     return sExecutableDirectory;
 }
