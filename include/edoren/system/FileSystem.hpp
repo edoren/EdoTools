@@ -13,7 +13,7 @@ namespace filesystem {
  *
  * @return true if the file exist, false otherwise
  */
-bool FileExists(StringView filename);
+EDOTOOLS_API bool FileExists(StringView filename);
 
 /**
  * @brief Load an UTF-8 encoded file to the memory
@@ -23,7 +23,7 @@ bool FileExists(StringView filename);
  * @return true if the file could be loaded, false
  *         otherwise
  */
-bool LoadFileData(StringView filename, String& dest);
+EDOTOOLS_API bool LoadFileData(StringView filename, String& dest);
 
 /**
  * @brief Load a file to the memory
@@ -33,14 +33,14 @@ bool LoadFileData(StringView filename, String& dest);
  * @return true if the file could be loaded, false
  *         otherwise
  */
-bool LoadFileData(StringView filename, Vector<uint8_t>& dest);
+EDOTOOLS_API bool LoadFileData(StringView filename, Vector<uint8_t>& dest);
 
 /**
  * @brief Get the OS specific path separator
  *
  * @return The character that represents the path separator
  */
-char GetOsSeparator();
+EDOTOOLS_API char GetOsSeparator();
 
 /**
  * @brief Get the directory that contains the executable
@@ -48,7 +48,7 @@ char GetOsSeparator();
  *
  * @return String containing the executable directory
  */
-const String& ExecutableDirectory();
+EDOTOOLS_API const String& GetExecutableDirectory();
 
 /**
  * @brief Return a string representing the current working
@@ -56,7 +56,7 @@ const String& ExecutableDirectory();
  *
  * @return String containing the current working directory
  */
-String CurrentWorkingDirectory();
+EDOTOOLS_API const String& GetCurrentWorkingDirectory();
 
 /**
  * @brief Return the absolute path
@@ -64,7 +64,7 @@ String CurrentWorkingDirectory();
  * @param path The relative path to make absolute
  * @return String containing the absolute path
  */
-String AbsolutePath(const String& path);
+EDOTOOLS_API String AbsolutePath(const String& path);
 
 /**
  * @brief Normalize a pathname by collapsing redundant
@@ -77,7 +77,7 @@ String AbsolutePath(const String& path);
  * @param path The path to normalize
  * @return String containing the normalized path
  */
-String NormalizePath(const String& path);
+EDOTOOLS_API String NormalizePath(const String& path);
 
 /**
  * @brief Check if a path is absolute
@@ -85,7 +85,7 @@ String NormalizePath(const String& path);
  * @param path The path to check
  * @return true if the path is absolute, false otherwise
  */
-bool IsAbsolutePath(const StringView& path);
+EDOTOOLS_API bool IsAbsolutePath(StringView path);
 
 /**
  * @brief Join two path components. The return value is
@@ -96,7 +96,7 @@ bool IsAbsolutePath(const StringView& path);
  * @param right The second path to join
  * @return String concatenating the two paths components
  */
-String Join(const StringView& left, const StringView& right);
+EDOTOOLS_API String Join(StringView left, StringView right);
 
 /**
  * @brief Variadic version of the Join function that
@@ -109,7 +109,7 @@ String Join(const StringView& left, const StringView& right);
  * @return String concatenating all the provided path components
  */
 template <typename... Args>
-String Join(const StringView& left, const StringView& right, Args... paths) {
+String Join(StringView left, StringView right, Args... paths) {
     return Join(Join(left, right), paths...);
 }
 
@@ -118,7 +118,7 @@ String Join(const StringView& left, const StringView& right, Args... paths) {
  *
  * @param searchPaths Vector of new search paths
  */
-void SetSearchPaths(Vector<String> searchPaths);
+EDOTOOLS_API void SetSearchPaths(Vector<String> searchPaths);
 
 /**
  * @brief Obtain the serch paths used to open files
@@ -126,7 +126,7 @@ void SetSearchPaths(Vector<String> searchPaths);
  * @return A constant reference to the currently used search
  *         paths
  */
-const Vector<String>& GetSearchPaths();
+EDOTOOLS_API const Vector<String>& GetSearchPaths();
 
 /**
  * @brief Add a path to the search paths used to open files
@@ -135,7 +135,7 @@ const Vector<String>& GetSearchPaths();
  * @return A constant reference to the currently used search
  *         paths
  */
-void AddSearchPath(const String& path);
+EDOTOOLS_API void AddSearchPath(const String& path);
 
 }  // namespace filesystem
 

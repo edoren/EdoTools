@@ -23,13 +23,14 @@ namespace edoren {
 namespace {
 
 String sExecutableDirectory;
+String sCurrentWorkingDirectory;
 Vector<String> sSearchPaths;
 
 }  // namespace
 
 namespace filesystem {
 
-bool FileExists(const StringView& filename) {
+bool FileExists(StringView filename) {
     if (IsAbsolutePath(filename)) {
         return std::filesystem::exists(std::filesystem::path(filename.getData()));
     } else {
@@ -101,7 +102,7 @@ char GetOsSeparator() {
 #endif
 }
 
-const String& ExecutableDirectory() {
+const String& GetExecutableDirectory() {
     if (sExecutableDirectory.isEmpty()) {
 #if PLATFORM_IS(PLATFORM_WINDOWS)
         WCHAR path[PATH_MAX_LENGTH];
@@ -124,7 +125,10 @@ const String& ExecutableDirectory() {
     return sExecutableDirectory;
 }
 
-String CurrentWorkingDirectory() {
+const String& GetCurrentWorkingDirectory() {
+    if (!sCurrentWorkingDirectory.isEmpty()) {
+        return sCurrentWorkingDirectory;
+    }
     String ret;
 #if PLATFORM_IS(PLATFORM_WINDOWS)
     DWORD buffer_length = PATH_MAX_LENGTH;
@@ -165,7 +169,8 @@ String CurrentWorkingDirectory() {
         bufferLength *= 2;
     }
 #endif
-    return ret;
+    sCurrentWorkingDirectory = std::move(ret);
+    return sCurrentWorkingDirectory;
 }
 
 String AbsolutePath(const String& /*path*/) {
@@ -269,7 +274,7 @@ String NormalizePath(const String& path) {
     return ret;
 }
 
-bool IsAbsolutePath(const StringView& path) {
+bool IsAbsolutePath(StringView path) {
     const auto& internal = path.getData();
     if (path.isEmpty()) {
         return false;
@@ -283,7 +288,7 @@ bool IsAbsolutePath(const StringView& path) {
 #endif
 }
 
-String Join(const StringView& left, const StringView& right) {
+String Join(StringView left, StringView right) {
     if (right.isEmpty()) {
         return String::FromUtf8(left.cbegin(), left.cend());
     }
@@ -312,7 +317,7 @@ void SetSearchPaths(Vector<String> searchPaths) {
 
 const Vector<String>& GetSearchPaths() {
     if (sSearchPaths.empty()) {
-        sSearchPaths.push_back(ExecutableDirectory());
+        sSearchPaths.push_back(GetExecutableDirectory());
     }
     return sSearchPaths;
 }
