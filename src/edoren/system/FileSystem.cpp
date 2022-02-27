@@ -44,7 +44,7 @@ bool FileExists(StringView filename) {
     return false;
 }
 
-bool LoadFileData(StringView filename, Vector<uint32_t>& dest) {
+bool LoadFileData(StringView filename, Vector<uint8_t>& dest) {
     String filenameCpy = filename;
     filenameCpy.replace('\\', GetOsSeparator());
     filenameCpy.replace('/', GetOsSeparator());
@@ -85,7 +85,7 @@ bool LoadFileData(StringView filename, Vector<uint32_t>& dest) {
 }
 
 bool LoadFileData(StringView filename, String& dest) {
-    Vector<uint32_t> out;
+    Vector<uint8_t> out;
     bool success = LoadFileData(filename, out);
     if (success) {
         auto* begin = reinterpret_cast<char*>(out.data());
