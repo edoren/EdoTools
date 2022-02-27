@@ -33,7 +33,7 @@ bool FileExists(const StringView& filename) {
     if (IsAbsolutePath(filename)) {
         return std::filesystem::exists(std::filesystem::path(filename.getData()));
     } else {
-        for (const String& path : sSearchPaths) {
+        for (const String& path : GetSearchPaths()) {
             String filePath = Join(path, filename);
             if (std::filesystem::exists(std::filesystem::path(filePath.getData()))) {
                 return true;
@@ -49,7 +49,7 @@ bool LoadFileData(StringView filename, Vector<uint32_t>& dest) {
     filenameCpy.replace('/', GetOsSeparator());
 
     String foundFilePath;
-    for (const String& path : sSearchPaths) {
+    for (const String& path : GetSearchPaths()) {
         String filePath = Join(path, filenameCpy);
         if (std::filesystem::exists(std::filesystem::path(filePath.getData()))) {
             foundFilePath = std::move(filePath);
@@ -57,7 +57,7 @@ bool LoadFileData(StringView filename, Vector<uint32_t>& dest) {
         }
     }
 
-    if (!foundFilePath.isEmpty()) {
+    if (foundFilePath.isEmpty()) {
         return false;
     }
 
