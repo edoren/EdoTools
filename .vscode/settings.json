@@ -1,5 +1,15 @@
 {
     "cmake.configureOnOpen": true,
     "cmake.sourceDirectory": "${workspaceFolder}/.",
-    "cmake.buildDirectory": "${workspaceFolder}/build"
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "files.associations": {
+        "*.zsh*": "shellscript",
+        "*.cu": "cpp",
+        ".clang-format": "yaml",
+        "xutility": "cpp",
+        "compare": "cpp",
+        "vector": "cpp",
+        "iosfwd": "cpp",
+        "istream": "cpp"
+    }
 }

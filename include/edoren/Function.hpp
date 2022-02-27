@@ -7,7 +7,7 @@
 #include <type_traits>
 #include <utility>
 
-#include <edoren/Platform.hpp>
+#include <edoren/util/Platform.hpp>
 
 #ifndef LAMBDA_DEFAULT_SIZE
     #define LAMBDA_DEFAULT_SIZE 6

@@ -26,7 +26,7 @@
 
 #include <edoren/String.hpp>
 
-#include <edoren/Platform.hpp>
+#include <edoren/util/Platform.hpp>
 #include <edoren/UTF.hpp>
 
 #include <algorithm>

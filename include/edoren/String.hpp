@@ -30,7 +30,7 @@
 #include <sstream>
 #include <string>
 
-#include <edoren/Platform.hpp>
+#include <edoren/util/Platform.hpp>
 #include <edoren/StringView.hpp>
 #include <edoren/UTF.hpp>
 #include <edoren/util/Config.hpp>

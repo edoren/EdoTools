@@ -60,3 +60,8 @@
  * @namespace edoren
  * @brief Namespace that contains all the tools
  */
+
+/**
+ * @namespace edoren::filesystem
+ * @brief Namespace to manage file system of the current OS
+ */

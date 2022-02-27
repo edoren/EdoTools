@@ -319,7 +319,7 @@ private:
  *           respectively
  */
 template <Encoding Base, typename Iter>
-class Iterator {
+class Iterator : public std::bidirectional_iterator_tag {
     static_assert(type::is_forward_iterator_v<Iter>, "Value should be a forward iterator");
     static_assert(std::is_integral<type::iterator_underlying_type_t<Iter>>::value,
                   "Iterator internal type should be an integer");

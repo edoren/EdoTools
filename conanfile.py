@@ -27,7 +27,7 @@ class EdoToolsConan(ConanFile):
 
     def requirements(self):
         if self.options.fmt_json_support:
-            self.requires("fmt/8.0.1")
+            self.requires("fmt/8.1.1")
         if self.options.nlohmann_json_support:
             self.requires("nlohmann_json/3.10.4")
 
