@@ -16,6 +16,14 @@ namespace filesystem {
 EDOTOOLS_API bool FileExists(StringView filename);
 
 /**
+ * @brief Find a file in the current search paths
+ *
+ * @return The absolute path to the found file or an empty
+ *         string if the file could not be found
+ */
+EDOTOOLS_API String FindFile(StringView filename);
+
+/**
  * @brief Load an UTF-8 encoded file to the memory
  *
  * @param filename The file to load the data from

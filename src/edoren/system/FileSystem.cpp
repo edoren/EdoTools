@@ -30,9 +30,10 @@ Vector<String> sSearchPaths;
 
 namespace filesystem {
 
+// TODO Improve performance per platform
 bool FileExists(StringView filename) {
-    if (IsAbsolutePath(filename)) {
-        return std::filesystem::exists(std::filesystem::path(filename.getData()));
+    if (IsAbsolutePath(filename) && std::filesystem::exists(std::filesystem::path(filename.getData()))) {
+        return true;
     } else {
         for (const String& path : GetSearchPaths()) {
             String filePath = Join(path, filename);
@@ -42,6 +43,20 @@ bool FileExists(StringView filename) {
         }
     }
     return false;
+}
+
+String FindFile(StringView filename) {
+    if (IsAbsolutePath(filename) && std::filesystem::exists(std::filesystem::path(filename.getData()))) {
+        return filename;
+    } else {
+        for (const String& path : GetSearchPaths()) {
+            String filePath = Join(path, filename);
+            if (std::filesystem::exists(std::filesystem::path(filePath.getData()))) {
+                return filePath;
+            }
+        }
+    }
+    return String();
 }
 
 bool LoadFileData(StringView filename, Vector<uint8_t>& dest) {
