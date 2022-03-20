@@ -56,6 +56,14 @@
     #define EDOTOOLS_CATCH(exception) if (false)
 #endif
 
+#define CREATE_MEMBER_FUNCTION_ALIAS(funcName, aliasName) CREATE_MEMBER_FUNCTION_REDIRECT(funcName, aliasName, this);
+
+#define CREATE_MEMBER_FUNCTION_REDIRECT(funcName, aliasName, objPtr)                                 \
+    template <typename... Args>                                                                      \
+    inline auto aliasName(Args&&... args)->decltype(objPtr->funcName(std::forward<Args>(args)...)) { \
+        return objPtr->funcName(std::forward<Args>(args)...);                                        \
+    }
+
 /**
  * @namespace edoren
  * @brief Namespace that contains all the tools

@@ -10,6 +10,20 @@
         "compare": "cpp",
         "vector": "cpp",
         "iosfwd": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "unordered_map": "cpp",
+        "filesystem": "cpp",
+        "deque": "cpp",
+        "format": "cpp",
+        "xstring": "cpp",
+        "array": "cpp",
+        "forward_list": "cpp",
+        "regex": "cpp",
+        "xhash": "cpp",
+        "xmemory": "cpp",
+        "xtree": "cpp",
+        "algorithm": "cpp"
     }
 }
