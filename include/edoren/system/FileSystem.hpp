@@ -59,12 +59,22 @@ EDOTOOLS_API char GetOsSeparator();
 EDOTOOLS_API const String& GetExecutableDirectory();
 
 /**
+ * @brief Change the path for the working directory
+ *
+ * @param newCWD The path to the current working directory
+ *
+ * @return Returns true if the working directory was changed
+ *         successfully
+ */
+EDOTOOLS_API bool SetCurrentWorkingDirectory(StringView newCWD);
+
+/**
  * @brief Return a string representing the current working
  *        directory.
  *
  * @return String containing the current working directory
  */
-EDOTOOLS_API const String& GetCurrentWorkingDirectory();
+EDOTOOLS_API String GetCurrentWorkingDirectory();
 
 /**
  * @brief Return the absolute path

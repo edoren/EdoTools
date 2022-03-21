@@ -140,10 +140,16 @@ const String& GetExecutableDirectory() {
     return sExecutableDirectory;
 }
 
-const String& GetCurrentWorkingDirectory() {
-    if (!sCurrentWorkingDirectory.isEmpty()) {
-        return sCurrentWorkingDirectory;
-    }
+bool SetCurrentWorkingDirectory(StringView newCWD) {
+    String cwd(newCWD);
+#if PLATFORM_IS(PLATFORM_WINDOWS)
+    return _wchdir(cwd.toWide().c_str()) == 0;
+#elif PLATFORM_IS(PLATFORM_LINUX | PLATFORM_MACOS | PLATFORM_IOS | PLATFORM_ANDROID)
+    return chdir(cwd.toUtf8().c_str()) == 0;
+#endif
+}
+
+String GetCurrentWorkingDirectory() {
     String ret;
 #if PLATFORM_IS(PLATFORM_WINDOWS)
     DWORD buffer_length = PATH_MAX_LENGTH;
@@ -184,8 +190,7 @@ const String& GetCurrentWorkingDirectory() {
         bufferLength *= 2;
     }
 #endif
-    sCurrentWorkingDirectory = std::move(ret);
-    return sCurrentWorkingDirectory;
+    return ret;
 }
 
 String AbsolutePath(const String& /*path*/) {
