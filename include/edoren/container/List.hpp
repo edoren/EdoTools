@@ -9,7 +9,6 @@ class List : public std::pmr::list<T> {
 public:
     using std::pmr::list<T>::list;
     using std::pmr::list<T>::operator=;
-    using std::pmr::list<T>::operator[];
 
     // C++ std::list alias
     CREATE_MEMBER_FUNCTION_ALIAS(front, getFront);

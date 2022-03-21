@@ -9,7 +9,6 @@ class Set : public std::pmr::set<T> {
 public:
     using std::pmr::set<T>::set;
     using std::pmr::set<T>::operator=;
-    using std::pmr::set<T>::operator[];
 
     // C++ std::set alias
     CREATE_MEMBER_FUNCTION_ALIAS(empty, getEmpty);
