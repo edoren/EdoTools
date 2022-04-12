@@ -6,7 +6,7 @@
 
 namespace edoren {
 
-class ConsoleLogHandler : public LogHandler {
+class EDOTOOLS_API ConsoleLogHandler : public LogHandler {
 public:
     ConsoleLogHandler(StringView appName);
     ~ConsoleLogHandler();

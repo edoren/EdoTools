@@ -2,6 +2,8 @@
 
 namespace edoren {
 
+LogHandler::~LogHandler() {}
+
 void LogHandler::setEnabled(bool enabled) {
     m_enabled = enabled;
 }

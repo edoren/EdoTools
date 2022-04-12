@@ -5,8 +5,10 @@
 
 namespace edoren {
 
-class LogHandler {
+class EDOTOOLS_API LogHandler {
 public:
+    virtual ~LogHandler();
+
     virtual void logMessage(LogPriority priority, StringView tag, StringView message) = 0;
 
     void setEnabled(bool enabled);

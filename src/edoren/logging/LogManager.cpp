@@ -12,22 +12,6 @@ namespace edoren {
 
 namespace {
 
-#if PLATFORM_IS(PLATFORM_WINDOWS)
-const char* const sLineEnding = "\r\n";
-#else
-const char* const sLineEnding = "\n";
-#endif
-
-#if PLATFORM_IS(PLATFORM_ANDROID)
-android_LogPriority sAndroidLogPriorities[] = {ANDROID_LOG_UNKNOWN,
-                                               ANDROID_LOG_VERBOSE,
-                                               ANDROID_LOG_DEBUG,
-                                               ANDROID_LOG_INFO,
-                                               ANDROID_LOG_WARN,
-                                               ANDROID_LOG_ERROR,
-                                               ANDROID_LOG_FATAL};
-#endif
-
 const char* sLogPriorityNames[] = {nullptr, "VERBOSE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"};
 
 String DefaultLogCallback(LogPriority priority, StringView tag, StringView message) {

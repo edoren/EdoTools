@@ -14,7 +14,7 @@
 
 namespace edoren {
 
-class LogManager : public Singleton<LogManager> {
+class EDOTOOLS_API LogManager : public Singleton<LogManager> {
 public:
     LogManager();
     ~LogManager();
@@ -25,7 +25,7 @@ public:
     template <typename T, class... Args>
     T* registerLogHandler(Args&&... args) {
         m_handlers.emplaceBack(std::make_unique<T>(std::forward<Args>(args)...));
-        return m_handlers.back().get();
+        return reinterpret_cast<T*>(m_handlers.back().get());
     }
 
     void verbose(StringView tag, StringView message);
@@ -38,7 +38,7 @@ public:
     void logMessage(LogPriority priority, StringView tag, StringView message);
 
 private:
-    const List<std::unique_ptr<LogHandler>> m_handlers;
+    List<std::unique_ptr<LogHandler>> m_handlers;
 };
 
 inline void LogVerbose(StringView tag, StringView message) {
