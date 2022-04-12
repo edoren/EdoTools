@@ -10,3 +10,11 @@ TEST_CASE("Map::Map", "[Map]") {
 
     SECTION("Copy a Map") {}
 }
+
+TEST_CASE("Map::getSize", "[Map]") {
+    Map<size_t, StringView> numbers = {{1, "H"}, {2, "O"}, {3, "L"}, {4, "A"}};
+
+    SECTION("Get size should return the container size") {
+        REQUIRE(numbers.getSize() == 4);
+    }
+}

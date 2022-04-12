@@ -94,7 +94,7 @@ bool LoadFileData(StringView filename, Vector<uint8_t>& dest) {
     dest.clear();
     dest.resize(fileSize);
 
-    file.read(reinterpret_cast<char*>(dest.data()), fileSize);
+    file.read(reinterpret_cast<char*>(dest.getData()), fileSize);
 
     return file.gcount() == fileSize;
 }
@@ -103,8 +103,8 @@ bool LoadFileData(StringView filename, String& dest) {
     Vector<uint8_t> out;
     bool success = LoadFileData(filename, out);
     if (success) {
-        auto* begin = reinterpret_cast<char*>(out.data());
-        dest = String::FromUtf8(begin, begin + out.size());
+        auto* begin = reinterpret_cast<char*>(out.getData());
+        dest = String::FromUtf8(begin, begin + out.getSize());
     }
     return success;
 }
@@ -156,13 +156,13 @@ String GetCurrentWorkingDirectory() {
     Vector<std::remove_pointer_t<LPWSTR>> buffer;
     while (true) {
         buffer.resize(buffer_length + 1);
-        DWORD num_characters = GetCurrentDirectoryW(buffer_length, buffer.data());
+        DWORD num_characters = GetCurrentDirectoryW(buffer_length, buffer.getData());
         if (num_characters > 0) {
             if (buffer[num_characters - 1] != L'\\') {
                 buffer[num_characters++] = L'\\';
                 buffer[num_characters] = L'\0';
             }
-            ret = String::FromWide(buffer.data(), buffer.data() + num_characters);
+            ret = String::FromWide(buffer.getData(), buffer.getData() + num_characters);
             buffer.clear();
             break;
         }
@@ -175,14 +175,14 @@ String GetCurrentWorkingDirectory() {
     while (true) {
         buffer.resize(bufferLength + 1);
         char* result = nullptr;
-        result = getcwd(buffer.data(), bufferLength);
+        result = getcwd(buffer.getData(), bufferLength);
         if (result != nullptr) {
             size_t numCharacters = strlen(result);
             if (numCharacters > 0 && buffer[numCharacters - 1] != '/') {
                 buffer[numCharacters++] = '/';
                 buffer[numCharacters] = '\0';
             }
-            ret = String::FromUtf8(buffer.data(), buffer.data() + numCharacters);
+            ret = String::FromUtf8(buffer.getData(), buffer.getData() + numCharacters);
             buffer.clear();
             break;
         }
@@ -214,25 +214,25 @@ String NormalizePath(const String& path) {
         // If the component is a .. directory
         if (seqSize == 2 && std::memcmp(begin, "..", 2) == 0) {
             // Check if the path_comps is empty
-            if (!pathComps.empty()) {
+            if (!pathComps.isEmpty()) {
                 // If the last element is a .. directory, append another one
                 // if not just pop_back the last component
-                auto& last = pathComps.back();
+                auto& last = pathComps.getBack();
                 if (!isAbsolute && (last.second - last.first) == 2 && std::memcmp(last.first, "..", 2) == 0) {
-                    pathComps.emplace_back(begin, end);
+                    pathComps.emplaceBack(begin, end);
                 } else {
-                    pathComps.pop_back();
+                    pathComps.popBack();
                 }
             }
             // Only add .. directories if the path is not absolute
             else if (!isAbsolute) {
-                pathComps.emplace_back(begin, end);
+                pathComps.emplaceBack(begin, end);
             }
             return;
         }
 
         // Add the path component
-        pathComps.emplace_back(begin, end);
+        pathComps.emplaceBack(begin, end);
     };
 
     const auto& internal = path.toUtf8();
@@ -246,7 +246,7 @@ String NormalizePath(const String& path) {
 #endif
 
     // Split the string by the separator
-    const char* pathcStart = internal.data() + beginOffset;
+    const char* pathcStart = &internal[0] + beginOffset;
     const char* pathcEnd = pathcStart;
     while (*pathcEnd != 0) {
         // Get the path component from the start and end iterators
@@ -275,10 +275,10 @@ String NormalizePath(const String& path) {
         ret += '/';
 #endif
     }
-    if (!isAbsolute & pathComps.empty()) {
+    if (!isAbsolute & pathComps.isEmpty()) {
         ret += '.';
     } else {
-        for (size_t i = 0; i < pathComps.size(); i++) {
+        for (size_t i = 0; i < pathComps.getSize(); i++) {
             if (i) {
                 ret += GetOsSeparator();
             }
@@ -336,14 +336,14 @@ void SetSearchPaths(Vector<String> searchPaths) {
 }
 
 const Vector<String>& GetSearchPaths() {
-    if (sSearchPaths.empty()) {
-        sSearchPaths.push_back(GetExecutableDirectory());
+    if (sSearchPaths.isEmpty()) {
+        sSearchPaths.pushBack(GetExecutableDirectory());
     }
     return sSearchPaths;
 }
 
 void AddSearchPath(const String& path) {
-    sSearchPaths.push_back(path);
+    sSearchPaths.pushBack(path);
 }
 
 }  // namespace filesystem
