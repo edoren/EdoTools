@@ -334,3 +334,22 @@ TEST_CASE("String::operator+=", "[String]") {
         REQUIRE(string == u8"\U0001F600\U0001F603\U0001F604\U0001F601\U0001F606");
     }
 }
+
+TEST_CASE("String::operator<=>", "[String]") {
+    String hola = "HOLA";
+    String mundo = "MUNDO";
+    String holaMundo = "HOLA MUNDO";
+
+    SECTION("String is less") {
+        auto ret = hola <=> mundo;
+        REQUIRE(ret == std::strong_ordering::less);
+    }
+    SECTION("String is greater") {
+        auto ret = mundo <=> hola;
+        REQUIRE(ret == std::strong_ordering::greater);
+    }
+    SECTION("String is equal") {
+        auto ret = (hola + " " + mundo) <=> holaMundo;
+        REQUIRE(ret == std::strong_ordering::equal);
+    }
+}

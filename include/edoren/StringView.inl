@@ -1,8 +1,11 @@
 #include "UTF.hpp"
 
 #include <algorithm>
+#include <compare>
+#include <functional>
 #include <sstream>
 #include <string>
+#include <type_traits>
 
 #include <cstring>
 
@@ -169,7 +172,29 @@ inline bool operator==(const StringView& left, const StringView& right) {
 }
 
 inline std::strong_ordering operator<=>(const StringView& left, const StringView& right) {
-    return std::lexicographical_compare_three_way(left.cbegin(), left.cend(), right.cbegin(), right.cend());
+    auto f1 = left.cbegin();
+    auto l1 = left.cend();
+    auto f2 = right.cbegin();
+    auto l2 = right.cend();
+    auto comp = std::compare_three_way{};
+
+    using ret_t = decltype(comp(*f1, *f2));
+    static_assert(std::disjunction<std::is_same<ret_t, std::strong_ordering>,
+                                   std::is_same<ret_t, std::weak_ordering>,
+                                   std::is_same<ret_t, std::partial_ordering>>::value,
+                  "The return type must be a comparison category type.");
+
+    bool exhaust1 = (f1 == l1);
+    bool exhaust2 = (f2 == l2);
+    for (; !exhaust1 && !exhaust2; exhaust1 = (++f1 == l1), exhaust2 = (++f2 == l2)) {
+        if (auto c = comp(*f1, *f2); c != 0) {
+            return c;
+        }
+    }
+
+    return !exhaust1   ? std::strong_ordering::greater
+           : !exhaust2 ? std::strong_ordering::less
+                       : std::strong_ordering::equal;
 }
 
 inline bool operator==(const StringView& left, const char* right) {
