@@ -6,7 +6,7 @@ class EdoToolsConan(ConanFile):
     license = "MIT"
     url = "https://github.com/edoren/EdoTools"
     description = "Personal tools to ease development process"
-    settings = "os", "compiler", "build_type", "arch"
+    settings = "cppstd", "os", "compiler", "build_type", "arch"
     options = {
         "shared": [True, False],
         "fmt_json_support": [True, False],
