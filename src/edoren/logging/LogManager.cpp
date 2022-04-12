@@ -67,7 +67,7 @@ void LogManager::fatal(StringView tag, StringView message) {
 }
 
 void LogManager::logMessage(LogPriority priority, StringView tag, StringView message) {
-    if (m_handlers.getSize() > 0) {
+    if (m_handlers.getSize() == 0) {
         return;
     }
 

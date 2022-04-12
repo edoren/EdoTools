@@ -4,8 +4,8 @@
 #include <edoren/container/List.hpp>
 #include <edoren/logging/LogHandler.hpp>
 #include <edoren/logging/LogPriority.hpp>
-#include <edoren/util/Singleton.hpp>
 #include <edoren/util/Platform.hpp>
+#include <edoren/util/Singleton.hpp>
 
 // On Windows undefine this anoying macro defined by windows.h
 #if PLATFORM_IS(PLATFORM_WINDOWS)
@@ -47,8 +47,8 @@ inline void LogVerbose(StringView tag, StringView message) {
 
 template <typename... Args>
 inline void LogVerbose(StringView tag, StringView message, Args&&... args) {
-    auto internalStringView = fmt::string_view(reinterpret_cast<const char*>(message.getData()), message.getSize());
-    auto formated = fmt::format(internalStringView, std::forward<Args>(args)...);
+    auto internalStringView = fmt::string_view(message.getData(), message.getSize());
+    auto formated = fmt::vformat(internalStringView, fmt::make_format_args(args...));
     LogVerbose(tag, StringView(formated.data()));
 }
 
@@ -58,8 +58,8 @@ inline void LogDebug(StringView tag, StringView message) {
 
 template <typename... Args>
 inline void LogDebug(StringView tag, StringView message, Args&&... args) {
-    auto internalStringView = fmt::string_view(reinterpret_cast<const char*>(message.getData()), message.getSize());
-    auto formated = fmt::format(internalStringView, std::forward<Args>(args)...);
+    auto internalStringView = fmt::string_view(message.getData(), message.getSize());
+    auto formated = fmt::vformat(internalStringView, fmt::make_format_args(args...));
     LogDebug(tag, StringView(formated.data()));
 }
 
@@ -69,8 +69,8 @@ inline void LogInfo(StringView tag, StringView message) {
 
 template <typename... Args>
 inline void LogInfo(StringView tag, StringView message, Args&&... args) {
-    auto internalStringView = fmt::string_view(reinterpret_cast<const char*>(message.getData()), message.getSize());
-    auto formated = fmt::format(internalStringView, std::forward<Args>(args)...);
+    auto internalStringView = fmt::string_view(message.getData(), message.getSize());
+    auto formated = fmt::vformat(internalStringView, fmt::make_format_args(args...));
     LogInfo(tag, StringView(formated.data()));
 }
 
@@ -80,8 +80,8 @@ inline void LogWarning(StringView tag, StringView message) {
 
 template <typename... Args>
 inline void LogWarning(StringView tag, StringView message, Args&&... args) {
-    auto internalStringView = fmt::string_view(reinterpret_cast<const char*>(message.getData()), message.getSize());
-    auto formated = fmt::format(internalStringView, std::forward<Args>(args)...);
+    auto internalStringView = fmt::string_view(message.getData(), message.getSize());
+    auto formated = fmt::vformat(internalStringView, fmt::make_format_args(args...));
     LogWarning(tag, StringView(formated.data()));
 }
 
@@ -91,8 +91,8 @@ inline void LogError(StringView tag, StringView message) {
 
 template <typename... Args>
 inline void LogError(StringView tag, StringView message, Args&&... args) {
-    auto internalStringView = fmt::string_view(reinterpret_cast<const char*>(message.getData()), message.getSize());
-    auto formated = fmt::format(internalStringView, std::forward<Args>(args)...);
+    auto internalStringView = fmt::string_view(message.getData(), message.getSize());
+    auto formated = fmt::vformat(internalStringView, fmt::make_format_args(args...));
     LogError(tag, StringView(formated.data()));
 }
 
@@ -102,8 +102,8 @@ inline void LogFatal(StringView tag, StringView message) {
 
 template <typename... Args>
 inline void LogFatal(StringView tag, StringView message, Args&&... args) {
-    auto internalStringView = fmt::string_view(reinterpret_cast<const char*>(message.getData()), message.getSize());
-    auto formated = fmt::format(internalStringView, std::forward<Args>(args)...);
+    auto internalStringView = fmt::string_view(message.getData(), message.getSize());
+    auto formated = fmt::vformat(internalStringView, fmt::make_format_args(args...));
     LogFatal(tag, StringView(formated.data()));
 }
 
