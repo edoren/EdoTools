@@ -14,9 +14,9 @@ public:
     CREATE_MEMBER_FUNCTION_ALIAS(front, getFront);
     CREATE_MEMBER_FUNCTION_ALIAS(back, getBack);
 
-    CREATE_MEMBER_FUNCTION_ALIAS(empty, getEmpty);
-    CREATE_MEMBER_FUNCTION_ALIAS(size, getSize);
-    CREATE_MEMBER_FUNCTION_ALIAS(max_size, getMaxSize);
+    CREATE_MEMBER_FUNCTION_ALIAS(empty, isEmpty);
+    CREATE_CONST_MEMBER_FUNCTION_ALIAS_NOARGS(size, getSize);
+    CREATE_CONST_MEMBER_FUNCTION_ALIAS_NOARGS(max_size, getMaxSize);
 
     CREATE_MEMBER_FUNCTION_ALIAS(push_back, pushBack);
     CREATE_MEMBER_FUNCTION_ALIAS(emplace_back, emplaceBack);

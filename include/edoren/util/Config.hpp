@@ -57,11 +57,25 @@
 #endif
 
 #define CREATE_MEMBER_FUNCTION_ALIAS(funcName, aliasName) CREATE_MEMBER_FUNCTION_REDIRECT(funcName, aliasName, this);
+#define CREATE_MEMBER_FUNCTION_ALIAS_NOARGS(funcName, aliasName) \
+    CREATE_MEMBER_FUNCTION_REDIRECT_NOARGS(funcName, aliasName, this);
+#define CREATE_CONST_MEMBER_FUNCTION_ALIAS_NOARGS(funcName, aliasName) \
+    CREATE_CONST_MEMBER_FUNCTION_REDIRECT_NOARGS(funcName, aliasName, this);
 
 #define CREATE_MEMBER_FUNCTION_REDIRECT(funcName, aliasName, objPtr)                                 \
     template <typename... Args>                                                                      \
     inline auto aliasName(Args&&... args)->decltype(objPtr->funcName(std::forward<Args>(args)...)) { \
         return objPtr->funcName(std::forward<Args>(args)...);                                        \
+    }
+
+#define CREATE_MEMBER_FUNCTION_REDIRECT_NOARGS(funcName, aliasName, objPtr) \
+    inline auto aliasName()->decltype(objPtr->funcName()) {                 \
+        return objPtr->funcName();                                          \
+    }
+
+#define CREATE_CONST_MEMBER_FUNCTION_REDIRECT_NOARGS(funcName, aliasName, objPtr) \
+    inline auto aliasName() const->decltype(objPtr->funcName()) {                 \
+        return objPtr->funcName();                                                \
     }
 
 /**
