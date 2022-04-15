@@ -368,6 +368,20 @@ String::size_type String::findLastOf(const StringView& str, size_type pos) const
     return sInvalidPos;
 }
 
+bool String::startsWith(const StringView& other) const {
+    if (getSize() < other.getSize()) {
+        return false;
+    }
+    return std::equal(cbegin(), cbegin() + other.getSize(), other.cbegin());
+}
+
+bool String::endsWith(const StringView& other) const {
+    if (getSize() < other.getSize()) {
+        return false;
+    }
+    return std::equal(cend() - other.getSize(), cend(), other.cbegin());
+}
+
 void String::replace(size_type position, size_type length, const StringView& replaceWith) {
     size_type utf8StrSize = getSize();
     if ((position + length) > utf8StrSize) {

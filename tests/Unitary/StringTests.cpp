@@ -150,6 +150,40 @@ TEST_CASE("String::findLastOf", "[String]") {
     }
 }
 
+TEST_CASE("String::startsWith", "[String]") {
+    String holaMundo = "HOLA MUNDO";
+
+    SECTION("String starts with given sequence") {
+        REQUIRE(holaMundo.startsWith("HOLA") == true);
+    }
+    SECTION("String does not starts with given sequence") {
+        REQUIRE(holaMundo.startsWith("MUNDO") == false);
+    }
+    SECTION("String is equal as given sequence") {
+        REQUIRE(holaMundo.startsWith("HOLA MUNDO") == true);
+    }
+    SECTION("String size is smaller than given sequence") {
+        REQUIRE(holaMundo.startsWith("HOLA MUNDO :D") == false);
+    }
+}
+
+TEST_CASE("String::endsWith", "[String]") {
+    String holaMundo = "HOLA MUNDO";
+
+    SECTION("String ends with given sequence") {
+        REQUIRE(holaMundo.endsWith("MUNDO") == true);
+    }
+    SECTION("String does not ends with given sequence") {
+        REQUIRE(holaMundo.endsWith("HOLA") == false);
+    }
+    SECTION("String is equal as given sequence") {
+        REQUIRE(holaMundo.endsWith("HOLA MUNDO") == true);
+    }
+    SECTION("String size is smaller than given sequence") {
+        REQUIRE(holaMundo.endsWith("HOLA MUNDO :D") == false);
+    }
+}
+
 TEST_CASE("String::replace", "[String]") {
     // "水、火、地、風、空"
     String elements = u8"\U00006C34\U00003001\U0000706B\U00003001\U00005730\U00003001\U000098A8\U00003001\U00007A7A";

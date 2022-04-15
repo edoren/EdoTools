@@ -670,6 +670,24 @@ public:
     size_type findLastOf(const StringView& str, size_type pos = sInvalidPos) const;
 
     /**
+     * @brief Check if the string first characters are equal to a given string
+     *
+     * @param other String to check
+     *
+     * @return true` if equal, `false` otherwise
+     */
+    bool startsWith(const StringView& other) const;
+
+    /**
+     * @brief Check if the string last characters are equal to a given string
+     *
+     * @param other String to check
+     *
+     * @return true` if equal, `false` otherwise
+     */
+    bool endsWith(const StringView& other) const;
+
+    /**
      * @brief Replace a SubString with another string
      *
      * This function replaces the SubString that starts at index `position`
