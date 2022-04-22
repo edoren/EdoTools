@@ -196,6 +196,24 @@ public:
     constexpr size_type findLastOf(const StringView& str, size_type pos = sInvalidPos) const;
 
     /**
+     * @brief Check if the string first characters are equal to a given string
+     *
+     * @param other String to check
+     *
+     * @return true` if equal, `false` otherwise
+     */
+    constexpr bool startsWith(const StringView& other) const;
+
+    /**
+     * @brief Check if the string last characters are equal to a given string
+     *
+     * @param other String to check
+     *
+     * @return true` if equal, `false` otherwise
+     */
+    constexpr bool endsWith(const StringView& other) const;
+
+    /**
      * @brief Return a part of the string
      *
      * This function returns the SubString that starts at index `position`

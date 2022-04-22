@@ -105,6 +105,20 @@ constexpr StringView::size_type StringView::findLastOf(const StringView& str, si
     return sInvalidPos;
 }
 
+constexpr bool StringView::startsWith(const StringView& other) const {
+    if (getSize() < other.getSize()) {
+        return false;
+    }
+    return std::equal(cbegin(), cbegin() + other.getSize(), other.cbegin());
+}
+
+constexpr bool StringView::endsWith(const StringView& other) const {
+    if (getSize() < other.getSize()) {
+        return false;
+    }
+    return std::equal(cend() - other.getSize(), cend(), other.cbegin());
+}
+
 constexpr StringView StringView::subString(size_type position, size_type length) const {
     size_type utf8StrSize = getSize();
     if ((position + length) > utf8StrSize) {
@@ -186,10 +200,12 @@ inline std::strong_ordering operator<=>(const StringView& left, const StringView
 
     bool exhaust1 = (f1 == l1);
     bool exhaust2 = (f2 == l2);
-    for (; !exhaust1 && !exhaust2; exhaust1 = (++f1 == l1), exhaust2 = (++f2 == l2)) {
+    while (!exhaust1 && !exhaust2) {
         if (auto c = comp(*f1, *f2); c != 0) {
             return c;
         }
+        exhaust1 = (++f1 == l1);
+        exhaust2 = (++f2 == l2);
     }
 
     return !exhaust1   ? std::strong_ordering::greater

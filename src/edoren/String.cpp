@@ -369,17 +369,11 @@ String::size_type String::findLastOf(const StringView& str, size_type pos) const
 }
 
 bool String::startsWith(const StringView& other) const {
-    if (getSize() < other.getSize()) {
-        return false;
-    }
-    return std::equal(cbegin(), cbegin() + other.getSize(), other.cbegin());
+    return StringView(*this).startsWith(other);
 }
 
 bool String::endsWith(const StringView& other) const {
-    if (getSize() < other.getSize()) {
-        return false;
-    }
-    return std::equal(cend() - other.getSize(), cend(), other.cbegin());
+    return StringView(*this).endsWith(other);
 }
 
 void String::replace(size_type position, size_type length, const StringView& replaceWith) {

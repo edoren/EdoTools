@@ -513,10 +513,11 @@ constexpr std::strong_ordering CodeUnitRange<Base, Iter>::operator<=>(const Code
         return std::strong_ordering::less;
     } else if (size > otherSize) {
         return std::strong_ordering::greater;
-    } else if (std::equal(m_range.first, m_range.second, other.m_range.first)) {
-        return std::strong_ordering::equal;
     }
-    return std::strong_ordering::equivalent;
+    return std::lexicographical_compare_three_way(m_range.first,
+                                                  m_range.second,
+                                                  other.m_range.first,
+                                                  other.m_range.second);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

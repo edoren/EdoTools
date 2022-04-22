@@ -370,20 +370,24 @@ TEST_CASE("String::operator+=", "[String]") {
 }
 
 TEST_CASE("String::operator<=>", "[String]") {
-    String hola = "HOLA";
-    String mundo = "MUNDO";
-    String holaMundo = "HOLA MUNDO";
-
-    SECTION("String is less") {
-        auto ret = hola <=> mundo;
+    SECTION("String is less different size") {
+        auto ret = String("HOLA") <=> String("MUNDO");
         REQUIRE(ret == std::strong_ordering::less);
     }
-    SECTION("String is greater") {
-        auto ret = mundo <=> hola;
+    SECTION("String is less same size") {
+        auto ret = String("HOLA MANDO") <=> String("HOLA MUNDO");
+        REQUIRE(ret == std::strong_ordering::less);
+    }
+    SECTION("String is greater different size") {
+        auto ret = String("MUNDO") <=> String("HOLA");
+        REQUIRE(ret == std::strong_ordering::greater);
+    }
+    SECTION("String is greater same size") {
+        auto ret = String("HOLA MUNDO") <=> String("HOLA MANDO");
         REQUIRE(ret == std::strong_ordering::greater);
     }
     SECTION("String is equal") {
-        auto ret = (hola + " " + mundo) <=> holaMundo;
+        auto ret = String("HOLA MUNDO") <=> String("HOLA MUNDO");
         REQUIRE(ret == std::strong_ordering::equal);
     }
 }

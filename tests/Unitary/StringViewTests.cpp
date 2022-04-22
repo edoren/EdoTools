@@ -85,6 +85,40 @@ TEST_CASE("StringView::findLastOf", "[StringView]") {
     }
 }
 
+TEST_CASE("StringView::startsWith", "[StringView]") {
+    StringView holaMundo = "HOLA MUNDO";
+
+    SECTION("StringView starts with given sequence") {
+        REQUIRE(holaMundo.startsWith("HOLA") == true);
+    }
+    SECTION("StringView does not starts with given sequence") {
+        REQUIRE(holaMundo.startsWith("MUNDO") == false);
+    }
+    SECTION("StringView is equal as given sequence") {
+        REQUIRE(holaMundo.startsWith("HOLA MUNDO") == true);
+    }
+    SECTION("StringView size is smaller than given sequence") {
+        REQUIRE(holaMundo.startsWith("HOLA MUNDO :D") == false);
+    }
+}
+
+TEST_CASE("StringView::endsWith", "[StringView]") {
+    StringView holaMundo = "HOLA MUNDO";
+
+    SECTION("StringView ends with given sequence") {
+        REQUIRE(holaMundo.endsWith("MUNDO") == true);
+    }
+    SECTION("StringView does not ends with given sequence") {
+        REQUIRE(holaMundo.endsWith("HOLA") == false);
+    }
+    SECTION("StringView is equal as given sequence") {
+        REQUIRE(holaMundo.endsWith("HOLA MUNDO") == true);
+    }
+    SECTION("StringView size is smaller than given sequence") {
+        REQUIRE(holaMundo.endsWith("HOLA MUNDO :D") == false);
+    }
+}
+
 TEST_CASE("StringView::iterator forward", "[StringView]") {
     StringView elements = u8"\U00006C34\U00003001\U0000706B\U00003001";  // "水、火、"
     auto it0 = elements.begin();
