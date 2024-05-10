@@ -70,9 +70,9 @@ class EdoToolsConan(ConanFile):
 
     def requirements(self):
         if self.options.fmt_support:
-            self.requires("fmt/8.1.1", transitive_headers=True)
+            self.requires("fmt/10.2.1", transitive_headers=True)
         if self.options.nlohmann_json_support:
-            self.requires("nlohmann_json/3.10.4", transitive_headers=True)
+            self.requires("nlohmann_json/3.11.3", transitive_headers=True)
 
     def package_info(self):
         self.cpp_info.libs = [self.name]

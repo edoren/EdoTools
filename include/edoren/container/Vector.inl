@@ -171,14 +171,9 @@ auto Vector<T>::firstOrNull(Func predicate) const -> const T* {
 #ifdef EDOTOOLS_FMT_SUPPORT
 
 template <typename T>
-constexpr auto fmt::formatter<edoren::Vector<T>>::parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin()) {
-    return ctx.begin();
-}
-
-template <typename T>
-template <typename FormatContext>
-auto fmt::formatter<edoren::Vector<T>>::format(const edoren::Vector<T>& v, FormatContext& ctx) -> decltype(ctx.out()) {
-    return format_to(ctx.out(), "[{}]", join(v, ", "));
+auto fmt::formatter<edoren::Vector<T>>::format(const edoren::Vector<T>& vec,
+                                               fmt::format_context& ctx) const -> fmt::format_context::iterator {
+    return fmt::formatter<std::string_view>::format(fmt::format("[{}]", join(vec, ", ")), ctx);
 }
 
 #endif  // EDOTOOLS_FMT_SUPPORT

@@ -1,9 +1,8 @@
 #pragma once
 
+#include <edoren/util/Config.hpp>
 #include <optional>
 #include <vector>
-
-#include <edoren/util/Config.hpp>
 
 #ifdef EDOTOOLS_FMT_SUPPORT
     #include <fmt/format.h>
@@ -98,11 +97,8 @@ public:
 // See https://fmt.dev/latest/api.html#formatting-user-defined-types
 
 template <typename T>
-struct fmt::formatter<edoren::Vector<T>> {
-    constexpr auto parse(fmt::format_parse_context& ctx) -> decltype(ctx.begin());
-
-    template <typename FormatContext = format_context>
-    auto format(const edoren::Vector<T>& v, FormatContext& ctx) -> decltype(ctx.out());
+struct fmt::formatter<edoren::Vector<T>> : fmt::formatter<std::string_view> {
+    auto format(const edoren::Vector<T>& value, format_context& ctx) const -> format_context::iterator;
 };
 
 #endif  // EDOTOOLS_FMT_SUPPORT

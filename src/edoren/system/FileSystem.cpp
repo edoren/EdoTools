@@ -324,9 +324,9 @@ String Join(StringView left, StringView right) {
     const auto& internal = left.getData();
     char lastCharacter = internal[left.getSize() - 1];
     if (lastCharacter == GetOsSeparator()) {
-        ret = "{}{}"_format(left, right);
+        ret = left + right;
     } else {
-        ret = "{}{}{}"_format(left, GetOsSeparator(), right);
+        ret = left + GetOsSeparator() + right;
     }
     return ret;
 }
