@@ -1,9 +1,12 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.15)
+
+project(EdoToolsTest CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# file(GLOB_RECURSE UNITARY_TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/*.cpp)
+find_package(edotools CONFIG REQUIRED)
+find_package(Catch2 REQUIRED)
 
 set(UNITARY_TEST_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/Main.cpp
@@ -19,14 +22,9 @@ set(UNITARY_TEST_SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/container/SetTests.cpp
 )
 
-if(FMT_SUPPORT)
-    list(APPEND UNITARY_TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/FormattingTests.cpp)
-endif()
+list(APPEND UNITARY_TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/FormattingTests.cpp)
 
-if(NLOHMANN_JSON_SUPPORT)
-    list(APPEND UNITARY_TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/JSONTests.cpp)
-endif()
+list(APPEND UNITARY_TEST_SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/Unitary/JSONTests.cpp)
 
-add_executable(UnitaryTest ${UNITARY_TEST_SOURCE_FILES})
-target_link_libraries(UnitaryTest CONAN_PKG::catch2 EdoTools)
-add_test(NAME UnitaryTest WORKING_DIRECTORY ${CMAKE_BINARY_DIR} COMMAND UnitaryTest)
+add_executable(${PROJECT_NAME} ${UNITARY_TEST_SOURCE_FILES})
+target_link_libraries(${PROJECT_NAME} Catch2::Catch2 edotools::edotools)

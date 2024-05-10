@@ -1,6 +1,7 @@
 # Build Folder
 /build
 /tests/build
+CMakeUserPresets.json
 
 # MacOSX Files
 .DS_Store

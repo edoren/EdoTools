@@ -1,4 +1,3 @@
----
 BasedOnStyle: Google
 AllowShortFunctionsOnASingleLine: Empty
 ColumnLimit: 120
@@ -6,22 +5,28 @@ IndentWidth: 4
 ---
 Language: Cpp
 AccessModifierOffset: -4
-ConstructorInitializerIndentWidth: 6
-Cpp11BracedListStyle: true
-DerivePointerAlignment: false
-SortIncludes: true
-IndentPPDirectives: BeforeHash
-IncludeBlocks: Preserve
-BinPackArguments: false
-BinPackParameters: false
 AllowAllArgumentsOnNextLine: false
 AllowAllConstructorInitializersOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: Empty
 AllowShortCaseLabelsOnASingleLine: false
-# AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
----
+BinPackParameters: false
+BreakBeforeBraces: Attach
+ConstructorInitializerIndentWidth: 6
+Cpp11BracedListStyle: true
+DerivePointerAlignment: false
+FixNamespaceComments: true
+IncludeBlocks: Regroup
+IndentPPDirectives: BeforeHash
+InsertBraces: true
+SeparateDefinitionBlocks: Always
+ShortNamespaceLines: 0
+SortIncludes: CaseSensitive
+InsertNewlineAtEOF: true
+EmptyLineBeforeAccessModifier: LogicalBlock
+KeepEmptyLinesAtEOF: false
+MaxEmptyLinesToKeep: 1
